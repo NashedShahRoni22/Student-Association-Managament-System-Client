@@ -21,12 +21,12 @@ export default function UpcomingNotices() {
             <img
               src={ImportantImage}
               alt=""
-              className="shadow-xl rounded-3xl"
+              className=""
             />
           </div>
-          <Card className="my-10 lg:w-1/2 lg:shadow-none">
+          <Card className="my-10 lg:w-1/2">
             <CardBody className="flex flex-col gap-4">
-              <div className="flex justify-center p-2 border border-indigo-500 hover:border-transparent hover:shadow cursor-pointer hover:shadow-indigo-500 rounded-md">
+              <div className="flex justify-center p-8 border border-indigo-500 hover:border-transparent hover:shadow cursor-pointer hover:shadow-indigo-500 rounded-md">
                 <PhotoIcon className="h-6 w-6 text-indigo-500" />
                 <label for="notice-image" className="text-black font-semibold ml-1">Choose Image</label>
                 <input id="notice-image" type="file" className="hidden" />
