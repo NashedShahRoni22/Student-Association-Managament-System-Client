@@ -9,13 +9,13 @@ const MainLayout = () => {
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
   return (
-    <div>
+    <div className="bg-indigo-300">
       <Header openDrawer={openDrawer}/>
       <div className="flex gap-8">
-        <div className="hidden md:block">
+        <div className="hidden lg:block mt-8">
           <Sidebar />
         </div>
-        <div className="w-full">
+        <div className="w-full banner">
           <Outlet />
         </div>
       </div>

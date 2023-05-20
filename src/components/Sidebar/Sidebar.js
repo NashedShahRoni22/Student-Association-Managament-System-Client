@@ -26,7 +26,7 @@ export default function Sidebar() {
     setOpen(open === value ? 0 : value);
   };
   return (
-    <Card className="">
+    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
       <List>
         <Link to="/" className="font-semibold text-indigo-500">
           <ListItem>
@@ -111,7 +111,7 @@ export default function Sidebar() {
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0">
-              <ListItem>Notice</ListItem>
+              <Link to='/upcoming-notices'><ListItem>Notice</ListItem></Link>
               <ListItem>Activity</ListItem>
               <ListItem>Meetings</ListItem>
               <ListItem>Blog</ListItem>

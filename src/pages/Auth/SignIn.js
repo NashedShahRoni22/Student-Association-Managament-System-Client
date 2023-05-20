@@ -40,7 +40,7 @@ export default function SignIn() {
       });
   };
   return (
-    <section className="h-[100vh] flex items-center justify-center bg-indigo-200 rounded-xl">
+    <section className="h-[100vh] flex items-center justify-center">
       <form onSubmit={handelUserLogin}>
         <Card className="w-96">
           <CardHeader

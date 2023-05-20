@@ -56,7 +56,7 @@ export default function SignUp() {
       });
   };
   return (
-    <section className="h-[100vh] flex items-center justify-center bg-indigo-200 rounded-xl">
+    <section className="h-[100vh] flex items-center justify-center rounded-xl">
       <form onSubmit={handleRegistration}>
         <Card className="w-96">
           <CardHeader
