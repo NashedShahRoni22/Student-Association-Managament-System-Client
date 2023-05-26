@@ -36,7 +36,7 @@ export default function SignIn() {
         const errorMessage = error.message;
         toast.error(errorMessage);
         setLoading(false);
-        navigate("/register");
+        navigate("/sign-up");
       });
   };
   return (
@@ -45,8 +45,7 @@ export default function SignIn() {
         <Card className="w-96">
           <CardHeader
             variant="gradient"
-            color="indigo"
-            className="mb-4 grid h-28 place-items-center"
+            className="mb-4 grid h-28 place-items-center bg-[#463BFB]"
           >
             <Typography variant="h3" color="white">
               Sign In
@@ -58,7 +57,7 @@ export default function SignIn() {
               name="email"
               label="Email"
               size="lg"
-              color="indigo"
+              color="blue"
               required
             />
             <Input
@@ -66,17 +65,17 @@ export default function SignIn() {
               name="password"
               label="Password"
               size="lg"
-              color="indigo"
+              color="blue"
               required
             />
           </CardBody>
           <CardFooter className="pt-0">
-            <Button color="indigo" fullWidth type="submit">
+            <Button className="bg-[#463BFB]" fullWidth type="submit">
               {loading ? <SmallSpinner /> : "Sign In"}
             </Button>
             <Typography variant="small" className="mt-6 flex justify-center">
               Don't have an account?
-              <Link to="/sign-up" className="ml-1 font-bold text-indigo-500">
+              <Link to="/sign-up" className="ml-1 font-bold text-[#463BFB]">
                 Sign up
               </Link>
             </Typography>

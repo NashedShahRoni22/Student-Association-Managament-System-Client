@@ -25,18 +25,9 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### 'features'
-1. Manager can add notice, recent activity, meetings, write blog.(Can Delete Also)
-data:{
-    name:
-    date:
-    postTime:
-    details:
-    image:
-}
-2. Users can add their comments.
-
+1. Manager can add notice, recent activity, meetings, write blog.(Can Delete Also).
+2. Students can add their comments.
 3. Admin can see membership request and can approve.
 4. Admin can see event request and can approve.
-5. Users can apply for event booking.
-6. Manager can see event and and accept or resue.
+5. Students can apply for event booking.
 

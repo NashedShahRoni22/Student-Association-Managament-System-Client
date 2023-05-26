@@ -7,16 +7,16 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Sidebar from "../Sidebar/Sidebar";
  
-export function DrawerBar({openDrawer, open, closeDrawer}) {
+export function DrawerBar({ open, closeDrawer}) {
  
   return (
     <React.Fragment>
-      <Drawer open={open} onClose={closeDrawer}>
+      <Drawer open={open} onClose={closeDrawer} className="bg-[#463BFB]">
         <div className="mb-2 flex items-center justify-between p-4">
-          <Typography variant="h6" color="blue-gray">
-            SAMS Menu
+          <Typography variant="h6" color="white">
+            SAMS
           </Typography>
-          <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
+          <IconButton variant="text" color="white" onClick={closeDrawer}>
             <XMarkIcon strokeWidth={2} className="h-5 w-5" />
           </IconButton>
         </div>

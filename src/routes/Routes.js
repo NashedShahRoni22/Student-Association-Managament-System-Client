@@ -5,6 +5,7 @@ import Membership from "../pages/Membership/Membership"
 import SignIn from "../pages/Auth/SignIn"
 import SignUp from "../pages/Auth/SignUp"
 import UpcomingNotices from "../pages/UpcomingNotices/UpcomingNotices"
+import RecentActivity from "../pages/RecentActivity/RecentActivity"
 
 
 export const router = createBrowserRouter([
@@ -31,7 +32,11 @@ export const router = createBrowserRouter([
             {
                 path:"/upcoming-notices",
                 element:<UpcomingNotices/>
-            }
+            },
+            {
+                path:"/recent-activity",
+                element:<RecentActivity/>
+            },
         ]
     }
 ])

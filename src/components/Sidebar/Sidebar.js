@@ -2,7 +2,6 @@ import {
   Accordion,
   AccordionBody,
   AccordionHeader,
-  Card,
   List,
   ListItem,
   ListItemPrefix,
@@ -15,7 +14,8 @@ import {
   UserPlusIcon,
   CalendarDaysIcon,
   AcademicCapIcon,
-  UserGroupIcon
+  UserGroupIcon,
+  PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
@@ -26,9 +26,9 @@ export default function Sidebar() {
     setOpen(open === value ? 0 : value);
   };
   return (
-    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <div className="h-[calc(100vh-2rem)] bg-[#463BFB] w-full max-w-[20rem] p-4 shadow-xl rounded-r-xl">
       <List>
-        <Link to="/" className="font-semibold text-indigo-500">
+        <Link to="/" className="font-semibold text-white">
           <ListItem>
             <ListItemPrefix>
               <HomeIcon className="h-6 w-6" />
@@ -36,7 +36,7 @@ export default function Sidebar() {
             Home
           </ListItem>
         </Link>
-        <Link to="/" className="font-semibold text-indigo-500">
+        <Link to="/" className="font-semibold text-white">
           <ListItem>
             <ListItemPrefix>
               <CalendarDaysIcon className="h-6 w-6" />
@@ -44,12 +44,20 @@ export default function Sidebar() {
             Events
           </ListItem>
         </Link>
-        <Link to="/membership" className="font-semibold text-indigo-500">
+        <Link to="/membership" className="font-semibold text-white">
           <ListItem>
             <ListItemPrefix>
               <UserPlusIcon className="h-6 w-6" />
             </ListItemPrefix>
             Membership
+          </ListItem>
+        </Link>
+        <Link to="/" className="font-semibold text-white">
+          <ListItem>
+            <ListItemPrefix>
+              <PaperAirplaneIcon className="h-6 w-6" />
+            </ListItemPrefix>
+            Blogs
           </ListItem>
         </Link>
 
@@ -58,7 +66,7 @@ export default function Sidebar() {
           icon={
             <ChevronDownIcon
               strokeWidth={2.5}
-              className={`mx-auto h-4 w-4 transition-transform ${
+              className={`mx-auto h-4 w-4 transition-transform${
                 open === 1 ? "rotate-180" : ""
               }`}
             />
@@ -67,21 +75,27 @@ export default function Sidebar() {
           <ListItem className="p-0" selected={open === 1}>
             <AccordionHeader
               onClick={() => handleOpen(1)}
-              className="border-b-0 p-3 font-semibold text-indigo-500"
+              className="border-b-0 p-3 font-semibold text-white"
             >
               <ListItemPrefix>
-              <AcademicCapIcon className="h-6 w-6" />
+                <AcademicCapIcon className="h-6 w-6" />
               </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
+              <Typography color="white" className="mr-auto font-normal">
                 Admin
               </Typography>
             </AccordionHeader>
           </ListItem>
           <AccordionBody className="py-1">
-            <List className="p-0">
-              <ListItem>Users</ListItem>
-              <ListItem>Membership</ListItem>
-              <ListItem>Events</ListItem>
+            <List className="p-0 text-white">
+              <Link className="ml-5" to="">
+                <ListItem>Users</ListItem>
+              </Link>
+              <Link className="ml-5" to="">
+                <ListItem>Membership</ListItem>
+              </Link>
+              <Link className="ml-5" to="">
+                <ListItem>Events</ListItem>
+              </Link>
             </List>
           </AccordionBody>
         </Accordion>
@@ -99,26 +113,28 @@ export default function Sidebar() {
           <ListItem className="p-0" selected={open === 2}>
             <AccordionHeader
               onClick={() => handleOpen(2)}
-              className="border-b-0 p-3 font-semibold text-indigo-500"
+              className="border-b-0 p-3 font-semibold text-white"
             >
               <ListItemPrefix>
-              <UserGroupIcon className="h-6 w-6" />
+                <UserGroupIcon className="h-6 w-6" />
               </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
-                Manager
+              <Typography className="mr-auto font-normal">
+                President
               </Typography>
             </AccordionHeader>
           </ListItem>
           <AccordionBody className="py-1">
-            <List className="p-0">
-              <Link to='/upcoming-notices'><ListItem>Notice</ListItem></Link>
-              <ListItem>Activity</ListItem>
-              <ListItem>Meetings</ListItem>
-              <ListItem>Blog</ListItem>
+            <List className="p-0 text-white">
+              <Link className="ml-5" to="">
+                <ListItem>Suggestions</ListItem>
+              </Link>
+              <Link className="ml-5" to="/upcoming-notices">
+                <ListItem>Events</ListItem>
+              </Link>
             </List>
           </AccordionBody>
         </Accordion>
       </List>
-    </Card>
+    </div>
   );
 }

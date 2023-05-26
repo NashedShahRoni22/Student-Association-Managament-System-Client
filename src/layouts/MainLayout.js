@@ -9,17 +9,25 @@ const MainLayout = () => {
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
   return (
-    <div className="bg-indigo-300">
-      <Header openDrawer={openDrawer}/>
-      <div className="flex gap-8">
-        <div className="hidden lg:block mt-8">
-          <Sidebar />
+    <div className="">
+      <div className="">
+        <div className="flex">
+          <div className="hidden lg:block">
+            <Sidebar />
+          </div>
+          <div className="w-full">
+            <div className="mb-5">
+            <Header openDrawer={openDrawer}/>
+            </div>
+            <Outlet />
+          </div>
         </div>
-        <div className="w-full banner">
-          <Outlet />
-        </div>
+        <DrawerBar
+          openDrawer={openDrawer}
+          open={open}
+          closeDrawer={closeDrawer}
+        />
       </div>
-      <DrawerBar openDrawer={openDrawer} open={open} closeDrawer={closeDrawer}/>
     </div>
   );
 };

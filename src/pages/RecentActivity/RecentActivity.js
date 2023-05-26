@@ -1,3 +1,8 @@
+import React, { useContext, useState } from "react";
+import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import { AuthContext } from "../../context/AuthProvider";
 import {
   Button,
   Card,
@@ -8,23 +13,18 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
-import React, { useContext, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
-import { toast } from "react-hot-toast";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
-import { useQuery } from "@tanstack/react-query";
-import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthProvider";
 
-export default function UpcomingNotices() {
+const RecentActivity = () => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const date = new Date().toLocaleDateString("de-DE");
   const time = new Date().toLocaleTimeString();
   const { user } = useContext(AuthContext);
-  //adding notice
-  const handleAddNotice = (e) => {
+  //adding activity
+  const handleAddactivity = (e) => {
     e.preventDefault();
     setLoading(true);
     const form = e.target;
@@ -40,32 +40,32 @@ export default function UpcomingNotices() {
     })
       .then((res) => res.json())
       .then((imageData) => {
-        const notice = {
+        const activity = {
           image: imageData.data.display_url,
           title,
           details,
           time,
-          date
+          date,
         };
         form.reset();
-        addNotice(notice);
+        addactivity(activity);
       })
       .catch((e) => console.log(e));
   };
 
-  //save notice post in DB
-  const addNotice = (notice) => {
-    fetch("http://localhost:5000/notices", {
+  //save activity post in DB
+  const addactivity = (activity) => {
+    fetch("http://localhost:5000/activity", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(notice),
+      body: JSON.stringify(activity),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.acknowledged) {
-          toast.success("Notice added successfully!");
+          toast.success("Activity added successfully!");
           setLoading(false);
           setSelectedImage("");
           refetch();
@@ -73,29 +73,29 @@ export default function UpcomingNotices() {
       });
   };
 
-  //get notices from DB
+  //get activities from DB
   const {
     isLoading,
     error,
-    data: notices,
+    data: activities,
     refetch,
   } = useQuery({
-    queryKey: ["noticeData"],
+    queryKey: ["activityData"],
     queryFn: () =>
-      fetch("http://localhost:5000/notices").then((res) => res.json()),
+      fetch("http://localhost:5000/activity").then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
 
   if (error) return "An error has occurred: " + error.message;
 
-  const TABLE_HEAD = ["ID", "TITLE", "POST DATE","POST TIME", "ACTION"];
+  const TABLE_HEAD = ["ID", "TITLE", "POST TIME", "POST DATE", "ACTION"];
 
-  //delete notice
+  //delete activity
   const handleDelete = (title, _id) => {
     const agree = window.confirm(`Are you sure to delete ${title}`);
     if (agree) {
-      fetch(`http://localhost:5000/notices/${_id}`, {
+      fetch(`http://localhost:5000/activity/${_id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
@@ -107,23 +107,17 @@ export default function UpcomingNotices() {
         });
     }
   };
-
   return (
     <div className="mx-5">
       {user?.displayName === "manager" && (
         <>
           <div className="my-10 bg-white/90 p-8 rounded-lg">
-            <p className="text-2xl lg:text-3xl font-extrabold text-blue-500">
-              Add Notice
+            <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
+              Add Activity
             </p>
-            {notices?.length === 5 && (
-              <p className="text-red-500 font-semibold mt-2">
-                *Don't add more than 5 notice in a row
-              </p>
-            )}
             <div className="lg:flex gap-16">
               <Card className="shadow-xl mt-10 lg:w-1/2">
-                <form onSubmit={handleAddNotice}>
+                <form onSubmit={handleAddactivity}>
                   <CardBody className="flex flex-col gap-4">
                     <div className="flex flex-col items-center justify-center p-4 border-2 border-blue-500 border-dashed rounded-md">
                       <div>
@@ -136,14 +130,14 @@ export default function UpcomingNotices() {
                         )}
                       </div>
                       <label
-                        htmlFor="notice-image"
+                        htmlFor="activity-image"
                         className="text-black font-semibold ml-1 flex gap-1 cursor-pointer px-4 py-2 shadow rounded hover:shadow-blue-500"
                       >
-                        <PhotoIcon className="h-6 w-6 text-blue-500" />
+                        <PhotoIcon className="h-6 w-6 text-[#463BFB]" />
                         Choose Image
                       </label>
                       <input
-                        id="notice-image"
+                        id="activity-image"
                         name="image"
                         type="file"
                         onChange={(e) => setSelectedImage(e.target.files[0])}
@@ -171,9 +165,8 @@ export default function UpcomingNotices() {
                       color="blue"
                       type="submit"
                       fullWidth
-                      disabled={notices?.length === 5}
                     >
-                      {loading ? <SmallSpinner /> : "Add Notice"}
+                      {loading ? <SmallSpinner /> : "Add activity"}
                     </Button>
                   </CardFooter>
                 </form>
@@ -199,7 +192,7 @@ export default function UpcomingNotices() {
                     </tr>
                   </thead>
                   <tbody>
-                    {notices.map(({ title, _id, time }) => (
+                    {activities.map(({ title, _id, time }) => (
                       <tr key={_id} className="even:bg-blue-gray-50/50">
                         <td className="p-4">
                           <Typography
@@ -225,7 +218,7 @@ export default function UpcomingNotices() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {date}
+                            {time}
                           </Typography>
                         </td>
                         <td className="p-4">
@@ -234,7 +227,7 @@ export default function UpcomingNotices() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {time}
+                            {date}
                           </Typography>
                         </td>
                         <td className="p-4">
@@ -257,32 +250,33 @@ export default function UpcomingNotices() {
         </>
       )}
       <div className="my-20 grid md:grid-cols-2 lg:grid-cols-4 gap-8 place-items-center">
-        {notices.map((notice) => (
-          <Card className="w-96" key={notice._id}>
+        {activities.map((activity) => (
+          <Card className="w-96" key={activity._id}>
             <CardHeader color="blue-gray" className="relative h-56">
               <img
-                src={notice.image}
-                alt="notice-img"
+                src={activity.image}
+                alt="activity-img"
                 layout="fill"
                 className="h-full w-full"
               />
             </CardHeader>
             <CardBody>
               <Typography variant="h5" className="text-[#463BFB]">
-                {notice.title}
+                {activity.title}
               </Typography>
+
               <div className="flex justify-between items-end mt-3">
                 <div>
                   <Typography className=" font-semibold text-sm">
-                    {notice.date}
+                    {activity.date}
                   </Typography>
 
-                  <Typography className="mt-3  font-semibold text-sm">
-                    {notice.time}
+                  <Typography className="mt-2  font-semibold text-sm">
+                    {activity.time}
                   </Typography>
                 </div>
                 <div>
-                <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
+                  <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
                     Details
                   </Link>
                 </div>
@@ -293,4 +287,6 @@ export default function UpcomingNotices() {
       </div>
     </div>
   );
-}
+};
+
+export default RecentActivity;

@@ -18,6 +18,51 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   //spinner for loading state
   const [loading, setLoading] = useState(true);
+  //all clubs
+  const clubs = [
+    {
+      name:"Drama"
+    },
+    {
+      name:"Dance"
+    },
+    {
+      name:"Music"
+    },
+    {
+      name:"Racing"
+    },
+    {
+      name:"Basketball"
+    },
+    {
+      name:"Animation"
+    },
+    {
+      name:"Soccer"
+    },
+    {
+      name:"Badminton"
+    },
+    {
+      name:"Confucius"
+    },
+    {
+      name:"Debating"
+    },
+    {
+      name:"Table Tennis"
+    },
+    {
+      name:"Scatting"
+    },
+    {
+      name:"Modeling"
+    },
+    {
+      name:"Drawing"
+    }
+  ]
   const createUser = (email, password) => {
     setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password);
@@ -56,6 +101,7 @@ const AuthProvider = ({ children }) => {
     loginUser,
     logOut,
     updateUser,
+    clubs
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
