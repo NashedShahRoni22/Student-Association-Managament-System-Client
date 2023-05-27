@@ -16,7 +16,7 @@ import SmallSpinner from "../../components/Spinners/SmallSpinner";
 export default function SignUp() {
   const { createUser, updateUser, loading, setLoading, clubs } = useContext(AuthContext);
   const [error, setError] = useState("");
-  const navigatae = useNavigate();
+  const navigate = useNavigate();
   //handle user sign up
   const handleRegistration = (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ export default function SignUp() {
           userProfileUpdate(club_name);
           saveUser(user)
           form.reset();
-          navigatae("/sign-in");
+          navigate("/");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -71,12 +71,12 @@ export default function SignUp() {
       body: JSON.stringify(user),
     })
       .then((res) => res.json())
-      .then(() => {
-        // console.log(data);  
+      .catch((e) => {
+        console.error(e);  
       });
   };
   return (
-    <section className="h-[100vh] flex items-center justify-center rounded-xl">
+    <section className="banner flex items-center justify-center rounded-xl">
       <form onSubmit={handleRegistration}>
         <Card className="w-96">
           <CardHeader
@@ -112,8 +112,10 @@ export default function SignUp() {
               color="blue"
               required
             />
+            <p className="text-sm text-red-500 font-semibold">Select Club*</p>
             {/* Select Club */}
             <div className="inline-block relative">
+              
               <select
                 className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:border-blue-600"
                 id="select-option"

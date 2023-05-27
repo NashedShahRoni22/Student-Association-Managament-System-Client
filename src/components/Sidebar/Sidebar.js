@@ -26,7 +26,7 @@ export default function Sidebar() {
     setOpen(open === value ? 0 : value);
   };
   return (
-    <div className="h-[calc(100vh-2rem)] bg-[#463BFB] w-full max-w-[20rem] p-4 shadow-xl rounded-r-xl">
+    <div className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4">
       <List>
         <Link to="/" className="font-semibold text-white">
           <ListItem>
@@ -87,7 +87,7 @@ export default function Sidebar() {
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0 text-white">
-              <Link className="ml-5" to="">
+              <Link className="ml-5" to="/users">
                 <ListItem>Users</ListItem>
               </Link>
               <Link className="ml-5" to="">

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/AuthProvider";
 import {
+  Avatar,
   Button,
   Card,
   CardBody,
@@ -22,7 +23,7 @@ const RecentActivity = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const date = new Date().toLocaleDateString("de-DE");
   const time = new Date().toLocaleTimeString();
-  const { user } = useContext(AuthContext);
+  const { signedInUser } = useContext(AuthContext);
   //adding activity
   const handleAddactivity = (e) => {
     e.preventDefault();
@@ -46,6 +47,7 @@ const RecentActivity = () => {
           details,
           time,
           date,
+          club_name: signedInUser?.club_name
         };
         form.reset();
         addactivity(activity);
@@ -82,14 +84,14 @@ const RecentActivity = () => {
   } = useQuery({
     queryKey: ["activityData"],
     queryFn: () =>
-      fetch("http://localhost:5000/activity").then((res) => res.json()),
+      fetch(`http://localhost:5000/activity?club_name=${signedInUser.club_name}`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (error) return "An error has occurred: " + error.message;
+  if (error) return toast.error(error.message);
 
-  const TABLE_HEAD = ["ID", "TITLE", "POST TIME", "POST DATE", "ACTION"];
+  const TABLE_HEAD = ["Image", "TITLE", "POST TIME", "POST DATE", "ACTION"];
 
   //delete activity
   const handleDelete = (title, _id) => {
@@ -108,10 +110,10 @@ const RecentActivity = () => {
     }
   };
   return (
-    <div className="mx-5">
-      {user?.displayName === "manager" && (
+    <div className="mx-5 min-h-[100vh] bg-gray-100 p-10 rounded-xl">
+      {signedInUser?.isPresident && (
         <>
-          <div className="my-10 bg-white/90 p-8 rounded-lg">
+          <div className="mb-10">
             <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
               Add Activity
             </p>
@@ -119,7 +121,7 @@ const RecentActivity = () => {
               <Card className="shadow-xl mt-10 lg:w-1/2">
                 <form onSubmit={handleAddactivity}>
                   <CardBody className="flex flex-col gap-4">
-                    <div className="flex flex-col items-center justify-center p-4 border-2 border-blue-500 border-dashed rounded-md">
+                    <div className="flex flex-col items-center justify-center p-4 border-2 border-[#463BFB] border-dashed rounded-md">
                       <div>
                         {selectedImage && (
                           <img
@@ -131,7 +133,7 @@ const RecentActivity = () => {
                       </div>
                       <label
                         htmlFor="activity-image"
-                        className="text-black font-semibold ml-1 flex gap-1 cursor-pointer px-4 py-2 shadow rounded hover:shadow-blue-500"
+                        className="text-black font-semibold ml-1 flex gap-1 cursor-pointer px-4 py-2 shadow rounded hover:shadow-[#463BFB]"
                       >
                         <PhotoIcon className="h-6 w-6 text-[#463BFB]" />
                         Choose Image
@@ -160,12 +162,7 @@ const RecentActivity = () => {
                     />
                   </CardBody>
                   <CardFooter className="pt-0">
-                    <Button
-                      variant="gradient"
-                      color="blue"
-                      type="submit"
-                      fullWidth
-                    >
+                    <Button className="bg-[#463BFB]" type="submit" fullWidth>
                       {loading ? <SmallSpinner /> : "Add activity"}
                     </Button>
                   </CardFooter>
@@ -182,8 +179,7 @@ const RecentActivity = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue"
-                            className="font-semibold"
+                            className="font-semibold text-[#463BFB]"
                           >
                             {head}
                           </Typography>
@@ -192,16 +188,10 @@ const RecentActivity = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {activities.map(({ title, _id, time }) => (
+                    {activities?.map(({ title, image, _id, time, date }) => (
                       <tr key={_id} className="even:bg-blue-gray-50/50">
                         <td className="p-4">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {_id}
-                          </Typography>
+                        <Avatar src={image} alt="avatar" />
                         </td>
                         <td className="p-4">
                           <Typography
@@ -249,42 +239,51 @@ const RecentActivity = () => {
           <div></div>
         </>
       )}
-      <div className="my-20 grid md:grid-cols-2 lg:grid-cols-4 gap-8 place-items-center">
-        {activities.map((activity) => (
-          <Card className="w-96" key={activity._id}>
-            <CardHeader color="blue-gray" className="relative h-56">
-              <img
-                src={activity.image}
-                alt="activity-img"
-                layout="fill"
-                className="h-full w-full"
-              />
-            </CardHeader>
-            <CardBody>
-              <Typography variant="h5" className="text-[#463BFB]">
-                {activity.title}
-              </Typography>
+      <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
+        All Activities
+      </p>
+      {activities?.length === 0 ? (
+        <p className="text-3xl text-center py-20 font-bold text-red-500 shadow-xl">
+          No Activites Found
+        </p>
+      ) : (
+        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+          {activities?.map((activity) => (
+            <Card className="w-96" key={activity._id}>
+              <CardHeader color="blue-gray" className="relative h-56">
+                <img
+                  src={activity.image}
+                  alt="activity-img"
+                  layout="fill"
+                  className="h-full w-full"
+                />
+              </CardHeader>
+              <CardBody>
+                <Typography variant="h5" className="text-[#463BFB]">
+                  {activity.title}
+                </Typography>
 
-              <div className="flex justify-between items-end mt-3">
-                <div>
-                  <Typography className=" font-semibold text-sm">
-                    {activity.date}
-                  </Typography>
+                <div className="flex justify-between items-end mt-3">
+                  <div>
+                    <Typography className=" font-semibold text-sm">
+                      {activity.date}
+                    </Typography>
 
-                  <Typography className="mt-2  font-semibold text-sm">
-                    {activity.time}
-                  </Typography>
+                    <Typography className="mt-2  font-semibold text-sm">
+                      {activity.time}
+                    </Typography>
+                  </div>
+                  <div>
+                    <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
+                      Details
+                    </Link>
+                  </div>
                 </div>
-                <div>
-                  <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
-                    Details
-                  </Link>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        ))}
-      </div>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

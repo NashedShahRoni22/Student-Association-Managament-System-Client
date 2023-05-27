@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { ClockIcon, CalendarDaysIcon, UserGroupIcon, UserIcon } from "@heroicons/react/24/outline";
+import { CalendarDaysIcon, UserGroupIcon, UserIcon } from "@heroicons/react/24/outline";
 import { AuthContext } from "../../context/AuthProvider";
+
+import ClockLoader from "react-spinners/ClockLoader";
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -20,9 +22,15 @@ const Clock = () => {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div className="border-4 border-l-[#463BFB] lg:flex gap-4 shadow-xl bg-white rounded-xl items-center justify-center p-8">
         <div>
-          <ClockIcon className="h-12 text-[#463BFB]"/>
+          {/* <ClockIcon className="h-12 text-[#463BFB]"/> */}
+          <ClockLoader
+          color="#463BFB"
+            size={45}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
         </div>
-        <h1 className="text-xl font-bold">{time.toLocaleTimeString()}</h1>
+        <h1 className="text-xl font-bold mt-2 lg:mt-0">{time.toLocaleTimeString()}</h1>
       </div>
       <div className="border-4 border-l-[#463BFB] lg:flex gap-4 shadow-xl bg-white rounded-xl items-center justify-center p-8">
         <div>

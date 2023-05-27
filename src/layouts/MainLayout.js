@@ -9,8 +9,7 @@ const MainLayout = () => {
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
   return (
-    <div className="">
-      <div className="">
+      <div className="bg-[#463BFB]">
         <div className="flex">
           <div className="hidden lg:block">
             <Sidebar />
@@ -28,7 +27,6 @@ const MainLayout = () => {
           closeDrawer={closeDrawer}
         />
       </div>
-    </div>
   );
 };
 

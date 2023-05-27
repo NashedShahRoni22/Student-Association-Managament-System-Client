@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Card,
   CardBody,
@@ -22,7 +23,7 @@ export default function UpcomingNotices() {
   const [selectedImage, setSelectedImage] = useState("");
   const date = new Date().toLocaleDateString("de-DE");
   const time = new Date().toLocaleTimeString();
-  const { user } = useContext(AuthContext);
+  const { signedInUser } = useContext(AuthContext);
   //adding notice
   const handleAddNotice = (e) => {
     e.preventDefault();
@@ -45,7 +46,8 @@ export default function UpcomingNotices() {
           title,
           details,
           time,
-          date
+          date,
+          club_name: signedInUser?.club_name
         };
         form.reset();
         addNotice(notice);
@@ -82,14 +84,14 @@ export default function UpcomingNotices() {
   } = useQuery({
     queryKey: ["noticeData"],
     queryFn: () =>
-      fetch("http://localhost:5000/notices").then((res) => res.json()),
+      fetch(`http://localhost:5000/notices?club_name=${signedInUser.club_name}`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (error) return "An error has occurred: " + error.message;
+  if (error) return toast.error(error.message);
 
-  const TABLE_HEAD = ["ID", "TITLE", "POST DATE","POST TIME", "ACTION"];
+  const TABLE_HEAD = ["Image", "TITLE", "POST DATE", "POST TIME", "ACTION"];
 
   //delete notice
   const handleDelete = (title, _id) => {
@@ -109,23 +111,18 @@ export default function UpcomingNotices() {
   };
 
   return (
-    <div className="mx-5">
-      {user?.displayName === "manager" && (
+    <div className="mx-5 bg-gray-200 min-h-[100vh] p-10 rounded-xl">
+      {signedInUser?.isPresident && (
         <>
-          <div className="my-10 bg-white/90 p-8 rounded-lg">
-            <p className="text-2xl lg:text-3xl font-extrabold text-blue-500">
+          <div className="mb-10">
+            <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
               Add Notice
             </p>
-            {notices?.length === 5 && (
-              <p className="text-red-500 font-semibold mt-2">
-                *Don't add more than 5 notice in a row
-              </p>
-            )}
             <div className="lg:flex gap-16">
               <Card className="shadow-xl mt-10 lg:w-1/2">
                 <form onSubmit={handleAddNotice}>
                   <CardBody className="flex flex-col gap-4">
-                    <div className="flex flex-col items-center justify-center p-4 border-2 border-blue-500 border-dashed rounded-md">
+                    <div className="flex flex-col items-center justify-center p-4 border-2 border-[#463BFB] border-dashed rounded-md">
                       <div>
                         {selectedImage && (
                           <img
@@ -137,9 +134,9 @@ export default function UpcomingNotices() {
                       </div>
                       <label
                         htmlFor="notice-image"
-                        className="text-black font-semibold ml-1 flex gap-1 cursor-pointer px-4 py-2 shadow rounded hover:shadow-blue-500"
+                        className="text-black font-semibold ml-1 flex gap-1 cursor-pointer px-4 py-2 shadow rounded hover:shadow-[#463BFB]"
                       >
-                        <PhotoIcon className="h-6 w-6 text-blue-500" />
+                        <PhotoIcon className="h-6 w-6 text-[#463BFB]" />
                         Choose Image
                       </label>
                       <input
@@ -167,11 +164,9 @@ export default function UpcomingNotices() {
                   </CardBody>
                   <CardFooter className="pt-0">
                     <Button
-                      variant="gradient"
-                      color="blue"
+                      className="bg-[#463BFB]"
                       type="submit"
                       fullWidth
-                      disabled={notices?.length === 5}
                     >
                       {loading ? <SmallSpinner /> : "Add Notice"}
                     </Button>
@@ -189,8 +184,7 @@ export default function UpcomingNotices() {
                         >
                           <Typography
                             variant="small"
-                            color="blue"
-                            className="font-semibold"
+                            className="font-semibold text-[#463BFB]"
                           >
                             {head}
                           </Typography>
@@ -199,16 +193,10 @@ export default function UpcomingNotices() {
                     </tr>
                   </thead>
                   <tbody>
-                    {notices.map(({ title, _id, time }) => (
+                    {notices?.map(({ image, title, _id, time }) => (
                       <tr key={_id} className="even:bg-blue-gray-50/50">
                         <td className="p-4">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {_id}
-                          </Typography>
+                        <Avatar src={image} alt="avatar" />
                         </td>
                         <td className="p-4">
                           <Typography
@@ -256,41 +244,50 @@ export default function UpcomingNotices() {
           <div></div>
         </>
       )}
-      <div className="my-20 grid md:grid-cols-2 lg:grid-cols-4 gap-8 place-items-center">
-        {notices.map((notice) => (
-          <Card className="w-96" key={notice._id}>
-            <CardHeader color="blue-gray" className="relative h-56">
-              <img
-                src={notice.image}
-                alt="notice-img"
-                layout="fill"
-                className="h-full w-full"
-              />
-            </CardHeader>
-            <CardBody>
-              <Typography variant="h5" className="text-[#463BFB]">
-                {notice.title}
-              </Typography>
-              <div className="flex justify-between items-end mt-3">
-                <div>
-                  <Typography className=" font-semibold text-sm">
-                    {notice.date}
-                  </Typography>
+      <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
+        All Notices
+      </p>
+      {notices?.length === 0 ? (
+        <p className="text-3xl text-center py-20 font-bold text-red-500 shadow-xl">
+          No Notices Found
+        </p>
+      ) : (
+        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+          {notices?.map((notice) => (
+            <Card className="w-96" key={notice._id}>
+              <CardHeader color="blue-gray" className="relative h-56">
+                <img
+                  src={notice.image}
+                  alt="notice-img"
+                  layout="fill"
+                  className="h-full w-full"
+                />
+              </CardHeader>
+              <CardBody>
+                <Typography variant="h5" className="text-[#463BFB]">
+                  {notice.title}
+                </Typography>
+                <div className="flex justify-between items-end mt-3">
+                  <div>
+                    <Typography className=" font-semibold text-sm">
+                      {notice.date}
+                    </Typography>
 
-                  <Typography className="mt-3  font-semibold text-sm">
-                    {notice.time}
-                  </Typography>
+                    <Typography className="mt-3  font-semibold text-sm">
+                      {notice.time}
+                    </Typography>
+                  </div>
+                  <div>
+                    <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
+                      Details
+                    </Link>
+                  </div>
                 </div>
-                <div>
-                <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
-                    Details
-                  </Link>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        ))}
-      </div>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

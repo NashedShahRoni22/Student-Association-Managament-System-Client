@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 
 export default function Header({ openDrawer }) {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut, signedInUser } = useContext(AuthContext);
   return (
-    <div className="mx-5 px-6 py-3 bg-[#463BFB] text-white rounded-lg">
+    <div className="px-4 py-2 text-white">
       <div className="flex items-center justify-between">
         <Link
           to="/"
@@ -14,11 +14,24 @@ export default function Header({ openDrawer }) {
         >
           SAMS
         </Link>
+        {signedInUser && (
+          <h5 className="text-2xl font-semibold hidden md:block">
+            Welcome to {signedInUser.club_name} Club
+          </h5>
+        )}
         <div className="flex items-center">
           {user?.uid ? (
-            <Link className="mr-4 font-bold bg-red-600 text-white px-4 py-2 rounded" onClick={logOut}>Sign Out</Link>
+            <Link
+              className="mr-4 font-bold bg-red-600 text-white px-4 py-2 rounded"
+              onClick={logOut}
+            >
+              Sign Out
+            </Link>
           ) : (
-            <Link to="/sign-in" className="mr-4 font-bold bg-white text-[#463BFB] px-4 py-2 rounded">
+            <Link
+              to="/sign-in"
+              className="mr-4 font-bold bg-white text-[#463BFB] px-4 py-2 rounded"
+            >
               Sign In
             </Link>
           )}

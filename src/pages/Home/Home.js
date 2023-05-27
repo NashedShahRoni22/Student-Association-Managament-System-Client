@@ -4,11 +4,13 @@ import Clock from '../../components/ReactTime.js/Clock';
 
 const Home = () => {
     return (
-        <div className='mx-5 h-[100vh]'>
-            <p className='my-5 text-3xl font-extrabold text-[#463BFB]'>Overview</p>
+        <div className='banner'>
+            <div className='h-full bg-black/40 p-5'>
+            <p className='mb-5 text-3xl font-extrabold text-white text-end'>Overview</p>
             <Clock/>
-            <p className='my-5 text-3xl font-extrabold text-[#463BFB]'>Explore SAMS</p>
+            <p className='mt-6 mb-5 text-3xl font-extrabold text-white text-end'>Explore SAMS</p>
             <HomeBox/>
+        </div>
         </div>
     );
 };

@@ -16,71 +16,74 @@ const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
   // set user information
   const [user, setUser] = useState(null);
+  //signed in user info
+  const [signedInUser, setSignedInUser] = useState(null);
   //spinner for loading state
   const [loading, setLoading] = useState(true);
   //all clubs
   const clubs = [
     {
-      name:"Drama"
+      name: "Drama",
     },
     {
-      name:"Dance"
+      name: "Dance",
     },
     {
-      name:"Music"
+      name: "Music",
     },
     {
-      name:"Racing"
+      name: "Racing",
     },
     {
-      name:"Basketball"
+      name: "Basketball",
     },
     {
-      name:"Animation"
+      name: "Animation",
     },
     {
-      name:"Soccer"
+      name: "Soccer",
     },
     {
-      name:"Badminton"
+      name: "Badminton",
     },
     {
-      name:"Confucius"
+      name: "Confucius",
     },
     {
-      name:"Debating"
+      name: "Debating",
     },
     {
-      name:"Table Tennis"
+      name: "Table Tennis",
     },
     {
-      name:"Scatting"
+      name: "Scatting",
     },
     {
-      name:"Modeling"
+      name: "Modeling",
     },
     {
-      name:"Drawing"
-    }
-  ]
+      name: "Drawing",
+    },
+  ];
   const createUser = (email, password) => {
-    setLoading(true)
+    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
-   //sign in user with email and password
-   const loginUser = (email, password) => {
-    setLoading(true)
+  //sign in user with email and password
+  const loginUser = (email, password) => {
+    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
   //sign out user
-  const logOut =()=>{
-    toast.error("Loged out")
+  const logOut = () => {
+    toast.error("Loged out");
+    setSignedInUser(null)
     return signOut(auth);
-  }
-  //get current user and set to user
+  };
+  //get current user and set to state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("Curent User Tracked", currentUser);
+      // console.log("Curent User Tracked", currentUser);
       setUser(currentUser);
       setLoading(false);
     });
@@ -88,6 +91,13 @@ const AuthProvider = ({ children }) => {
       unsubscribe();
     };
   }, [auth]);
+  //get signed in user and set to state
+  useEffect(() => {
+    fetch(`http://localhost:5000/user?email=${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => setSignedInUser(data[0]));
+  },[user?.email]);
+
   //update user's profile
   const updateUser = (profile) => {
     return updateProfile(auth.currentUser, profile);
@@ -95,13 +105,14 @@ const AuthProvider = ({ children }) => {
 
   const authInfo = {
     user,
-    loading, 
+    loading,
     setLoading,
     createUser,
     loginUser,
     logOut,
     updateUser,
-    clubs
+    clubs,
+    signedInUser
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
