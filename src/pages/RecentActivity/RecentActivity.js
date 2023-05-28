@@ -47,7 +47,7 @@ const RecentActivity = () => {
           details,
           time,
           date,
-          club_name: signedInUser?.club_name
+          club_name: signedInUser?.club_name,
         };
         form.reset();
         addactivity(activity);
@@ -84,7 +84,9 @@ const RecentActivity = () => {
   } = useQuery({
     queryKey: ["activityData"],
     queryFn: () =>
-      fetch(`http://localhost:5000/activity?club_name=${signedInUser.club_name}`).then((res) => res.json()),
+      fetch(
+        `http://localhost:5000/activity?club_name=${signedInUser.club_name}`
+      ).then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
@@ -110,11 +112,11 @@ const RecentActivity = () => {
     }
   };
   return (
-    <div className="mx-5 min-h-[100vh] bg-gray-100 p-10 rounded-xl">
+    <div className="mx-5 min-h-[100vh] p-10 rounded-xl">
       {signedInUser?.isPresident && (
         <>
           <div className="mb-10">
-            <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
+            <p className="text-2xl lg:text-3xl font-extrabold text-white">
               Add Activity
             </p>
             <div className="lg:flex gap-16">
@@ -191,7 +193,7 @@ const RecentActivity = () => {
                     {activities?.map(({ title, image, _id, time, date }) => (
                       <tr key={_id} className="even:bg-blue-gray-50/50">
                         <td className="p-4">
-                        <Avatar src={image} alt="avatar" />
+                          <Avatar src={image} alt="avatar" />
                         </td>
                         <td className="p-4">
                           <Typography
@@ -239,15 +241,15 @@ const RecentActivity = () => {
           <div></div>
         </>
       )}
-      <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
+      <p className="text-2xl lg:text-3xl font-extrabold text-white">
         All Activities
       </p>
       {activities?.length === 0 ? (
-        <p className="text-3xl text-center py-20 font-bold text-red-500 shadow-xl">
+        <p className="bg-white mt-5 text-3xl rounded-xl text-center py-20 font-bold text-red-500 shadow-xl">
           No Activites Found
         </p>
       ) : (
-        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+        <div className="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
           {activities?.map((activity) => (
             <Card className="w-96" key={activity._id}>
               <CardHeader color="blue-gray" className="relative h-56">

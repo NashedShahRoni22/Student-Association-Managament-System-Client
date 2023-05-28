@@ -25,9 +25,9 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### 'features'
-1. Manager can add notice, recent activity, meetings, write blog.(Can Delete Also).
-2. Students can add their comments.
-3. Admin can see membership request and can approve.
-4. Admin can see event request and can approve.
-5. Students can apply for event booking.
+1. President can add notice, recent activity, meetings.(Can Delete Also).
+2. Students can add blogs and their comments in blogs.
+3. President can apply for festive.
+3. Admin can see festive request and can approve. All user can see festive after approve.
+4. Students can see club members.
 

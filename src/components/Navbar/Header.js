@@ -14,7 +14,7 @@ export default function Header({ openDrawer }) {
         >
           SAMS
         </Link>
-        {signedInUser && (
+        {signedInUser?.club_name && (
           <h5 className="text-2xl font-semibold hidden md:block">
             Welcome to {signedInUser.club_name} Club
           </h5>

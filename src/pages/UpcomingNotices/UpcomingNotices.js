@@ -111,11 +111,11 @@ export default function UpcomingNotices() {
   };
 
   return (
-    <div className="mx-5 bg-gray-200 min-h-[100vh] p-10 rounded-xl">
+    <div className="mx-5 min-h-[100vh] p-10 rounded-xl">
       {signedInUser?.isPresident && (
         <>
           <div className="mb-10">
-            <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
+            <p className="text-2xl lg:text-3xl font-extrabold text-white">
               Add Notice
             </p>
             <div className="lg:flex gap-16">
@@ -244,15 +244,15 @@ export default function UpcomingNotices() {
           <div></div>
         </>
       )}
-      <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
+      <p className="text-2xl lg:text-3xl font-extrabold text-white">
         All Notices
       </p>
       {notices?.length === 0 ? (
-        <p className="text-3xl text-center py-20 font-bold text-red-500 shadow-xl">
+        <p className="mt-5 bg-white rounded-xl text-3xl text-center py-20 font-bold text-red-500 shadow-xl">
           No Notices Found
         </p>
       ) : (
-        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+        <div className="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
           {notices?.map((notice) => (
             <Card className="w-96" key={notice._id}>
               <CardHeader color="blue-gray" className="relative h-56">

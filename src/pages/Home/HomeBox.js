@@ -60,29 +60,6 @@ export default function HomeBox() {
           </Link>
         </CardBody>
       </Card>
-      {/* Give Donation */}
-      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
-        <CardBody className="flex flex-col items-center">
-          <GiftTopIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
-          <Typography
-            variant="h4"
-            color="blue-gray"
-            className="mb-2 text-center"
-          >
-            Add <br /> Donation
-          </Typography>
-          <a href="/" className="inline-block">
-            <Button
-              size="sm"
-              variant="text"
-              className="flex items-center gap-2 text-[#463BFB]"
-            >
-              View Details
-              <ArrowLongRightIcon strokeWidth={2} className="w-4 h-4" />
-            </Button>
-          </a>
-        </CardBody>
-      </Card>
       {/* Upcoming Meetings */}
       <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
         <CardBody className="flex flex-col items-center">
@@ -93,6 +70,29 @@ export default function HomeBox() {
             className="mb-2 text-center"
           >
             Upcoming <br /> Meetings
+          </Typography>
+          <Link to="/upcoming-meeetings" className="inline-block">
+            <Button
+              size="sm"
+              variant="text"
+              className="flex items-center gap-2 text-[#463BFB]"
+            >
+              View Details
+              <ArrowLongRightIcon strokeWidth={2} className="w-4 h-4" />
+            </Button>
+          </Link>
+        </CardBody>
+      </Card>
+      {/* Give Donation */}
+      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
+        <CardBody className="flex flex-col items-center">
+          <GiftTopIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
+          <Typography
+            variant="h4"
+            color="blue-gray"
+            className="mb-2 text-center"
+          >
+            Add <br /> Donation
           </Typography>
           <a href="/" className="inline-block">
             <Button

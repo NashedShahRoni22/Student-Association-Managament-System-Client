@@ -1,59 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useContext } from "react";
 import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
 import { toast } from "react-hot-toast";
-import { Button, Card, Typography } from "@material-tailwind/react";
+import { Card, Typography } from "@material-tailwind/react";
+import { AuthContext } from "../../context/AuthProvider";
 
-const Users = () => {
+const ClubMembers = () => {
+  const { signedInUser } = useContext(AuthContext);
   const {
     isLoading,
     error,
     data: activities,
-    refetch,
   } = useQuery({
     queryKey: ["users"],
     queryFn: () =>
-      fetch("http://localhost:5000/user").then((res) => res.json()),
+      fetch(
+        `http://localhost:5000/user?club_name=${signedInUser.club_name}`
+      ).then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
 
   if (error) return toast.error(error.message);
 
-  const TABLE_HEAD = ["NAME", "ID", "EMAIL", "SESSION","DEPARTMENT","CLUB NAME", "ROLE", "ACTION"];
-
-  //update user role
-  const handleUpdateRole = (_id) => {
-    fetch(`http://localhost:5000/user/${_id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if(data.acknowledged){
-            refetch();
-        };
-      });
-  };
-  //delete user
-  //delete activity
-  const handleDelete = (name, _id) => {
-    const agree = window.confirm(`Are you sure to delete ${name}`);
-    if (agree) {
-      fetch(`http://localhost:5000/user/${_id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.deletedCount > 0) {
-            toast.error(`${name} deleted successfully!`);
-            refetch();
-          }
-        });
-    }
-  };
+  const TABLE_HEAD = ["NAME", "ID", "EMAIL", "CLUB NAME", "ROLE","SESSION", "DEPARTMENT"];
   return (
     <div className="mx-5 min-h-[100vh]">
       <Card className="shadow-xl mt-10 overflow-x-auto w-full">
@@ -76,8 +46,8 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {activities.filter(user => user.name !== "admin" ).map(
-              ({ _id, id, name, email, club_name, isPresident, start_session, end_session, department }) => (
+            {activities.map(
+              ({ _id, id, name, email, club_name, isPresident, start_session,end_session, department  }) => (
                 <tr key={_id} className="even:bg-blue-gray-50/50">
                   <td className="p-4">
                     <Typography
@@ -112,6 +82,18 @@ const Users = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
+                      {club_name}
+                    </Typography>
+                  </td>
+                  <td className="p-4">
+                    <p className="px-4 py-2 shadow-xl w-fit rounded-xl bg-[#463BFB] text-white">{isPresident ? "President" : "Member"}</p>
+                  </td>
+                  <td className="p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
                       {start_session} to {end_session}
                     </Typography>
                   </td>
@@ -124,37 +106,6 @@ const Users = () => {
                       {department}
                     </Typography>
                   </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {club_name}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    {isPresident ? (
-                      <p className="px-4 py-2 shadow-xl w-fit rounded-xl bg-[#463BFB] text-white">President</p>
-                    ) : (
-                      <Button
-                        size="sm"
-                        color="green"
-                        onClick={() => handleUpdateRole(_id)}
-                      >
-                        Make President
-                      </Button>
-                    )}
-                  </td>
-                  <td className="p-4">
-                    <Button
-                      size="sm"
-                      color="red"
-                      onClick={() => handleDelete(name, _id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
                 </tr>
               )
             )}
@@ -165,4 +116,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default ClubMembers;

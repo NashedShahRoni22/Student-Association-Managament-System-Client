@@ -18,6 +18,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   //signed in user info
   const [signedInUser, setSignedInUser] = useState(null);
+  //total
   //spinner for loading state
   const [loading, setLoading] = useState(true);
   //all clubs

@@ -11,10 +11,9 @@ import { Link } from "react-router-dom";
 import {
   ChevronDownIcon,
   HomeIcon,
-  UserPlusIcon,
+  UserGroupIcon,
   CalendarDaysIcon,
   AcademicCapIcon,
-  UserGroupIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -41,15 +40,15 @@ export default function Sidebar() {
             <ListItemPrefix>
               <CalendarDaysIcon className="h-6 w-6" />
             </ListItemPrefix>
-            Events
+            Festive
           </ListItem>
         </Link>
-        <Link to="/membership" className="font-semibold text-white">
+        <Link to="/club-members" className="font-semibold text-white">
           <ListItem>
             <ListItemPrefix>
-              <UserPlusIcon className="h-6 w-6" />
+              <UserGroupIcon className="h-6 w-6" />
             </ListItemPrefix>
-            Membership
+            Club Members
           </ListItem>
         </Link>
         <Link to="/" className="font-semibold text-white">
@@ -91,10 +90,7 @@ export default function Sidebar() {
                 <ListItem>Users</ListItem>
               </Link>
               <Link className="ml-5" to="">
-                <ListItem>Membership</ListItem>
-              </Link>
-              <Link className="ml-5" to="">
-                <ListItem>Events</ListItem>
+                <ListItem>Festive Request</ListItem>
               </Link>
             </List>
           </AccordionBody>
@@ -129,7 +125,7 @@ export default function Sidebar() {
                 <ListItem>Suggestions</ListItem>
               </Link>
               <Link className="ml-5" to="/upcoming-notices">
-                <ListItem>Events</ListItem>
+                <ListItem>Apply Festive</ListItem>
               </Link>
             </List>
           </AccordionBody>
