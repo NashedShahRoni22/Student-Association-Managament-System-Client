@@ -2,18 +2,28 @@ import React, { useContext } from "react";
 import { Bars3CenterLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import RiseLoader from "react-spinners/RiseLoader";
 
 export default function Header({ openDrawer }) {
   const { user, logOut, signedInUser } = useContext(AuthContext);
   return (
-    <div className="px-4 py-2 text-white">
+    <div className="px-5 py-2 bg-gray-200 text-[#463BFB]">
       <div className="flex items-center justify-between">
-        <Link
-          to="/"
-          className="text-xl mr-4 cursor-pointer py-1.5 font-extrabold text-blue-[#463BFB]"
-        >
-          SAMS
-        </Link>
+        <div className="flex items-center gap-2">
+          <RiseLoader
+            size={8}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            color="#463BFB"
+          />
+          <Link
+            to="/"
+            className="text-xl mr-4 cursor-pointer py-1.5 font-extrabold text-blue-[#463BFB]"
+          >
+            SAMS
+          </Link>
+        </div>
+
         {signedInUser?.club_name && (
           <h5 className="text-2xl font-semibold hidden md:block">
             Welcome to {signedInUser.club_name} Club
@@ -22,7 +32,7 @@ export default function Header({ openDrawer }) {
         <div className="flex items-center">
           {user?.uid ? (
             <Link
-              className="mr-4 font-bold bg-red-600 text-white px-4 py-2 rounded"
+              className="mr-4 font-semibold text-sm bg-red-600 text-white px-2 py-1 rounded"
               onClick={logOut}
             >
               Sign Out
@@ -30,7 +40,7 @@ export default function Header({ openDrawer }) {
           ) : (
             <Link
               to="/sign-in"
-              className="mr-4 font-bold bg-white text-[#463BFB] px-4 py-2 rounded"
+              className="mr-4 font-semibold text-sm bg-white text-[#463BFB] px-2 py-1 rounded"
             >
               Sign In
             </Link>

@@ -138,9 +138,9 @@ export default function HomeBox() {
             color="blue-gray"
             className="mb-2 text-center"
           >
-            Add <br /> Suggestion
+            Take <br /> Decission
           </Typography>
-          <a href="/" className="inline-block">
+          <Link to="/take-decision" className="inline-block">
             <Button
               size="sm"
               variant="text"
@@ -149,9 +149,10 @@ export default function HomeBox() {
               Add Details
               <ArrowLongRightIcon strokeWidth={2} className="w-4 h-4" />
             </Button>
-          </a>
+          </Link>
         </CardBody>
       </Card>
+      
     </section>
   );
 }

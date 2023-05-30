@@ -15,9 +15,7 @@ const MainLayout = () => {
             <Sidebar />
           </div>
           <div className="w-full">
-            <div className="mb-5">
             <Header openDrawer={openDrawer}/>
-            </div>
             <Outlet />
           </div>
         </div>

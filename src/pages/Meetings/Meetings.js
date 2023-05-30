@@ -16,11 +16,6 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
-// import TimePicker from "react-time-picker";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
-// import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 function Icon({ id, open }) {
   return (
@@ -157,34 +152,17 @@ const Meetings = () => {
     }
   };
   return (
-    <div className="mx-5 min-h-[100vh] p-10 rounded-xl">
+    <div className="mx-5 min-h-[100vh]">
       {signedInUser?.isPresident && (
         <>
-          <div className="mb-10">
+          <div className="my-10">
             <p className="text-2xl lg:text-3xl font-extrabold text-white">
-              Add Activity
+              Schedule Meeting
             </p>
             <div className="lg:flex gap-16">
               <Card className="shadow-xl mt-10 lg:w-1/3">
                 <form onSubmit={handleAddactivity}>
                   <CardBody className="flex flex-col gap-4">
-                    {/* <div className="flex gap-4 items-center">
-                      <div>
-                        <TimePicker
-                          amPmAriaLabel="Select AM/PM"
-                          onChange={onChange}
-                          value={value}
-                          className="w-1/2 text-center text-lg h-[40px]"
-                        />
-                      </div>
-                      <div>
-                        <DatePicker
-                          selected={meetingDate}
-                          onChange={(date) => setMeetingDate(date)}
-                          className="border border-[#463BFB] w-full text-lg h-[40px] text-center"
-                        />
-                      </div>
-                    </div> */}
                     <div className="md:flex gap-4 justify-between">
                       <div className="w-full">
                         <p className="text-xs font-semibold">

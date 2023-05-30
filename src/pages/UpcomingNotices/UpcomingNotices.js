@@ -121,10 +121,10 @@ export default function UpcomingNotices() {
   };
 
   return (
-    <div className="mx-5 min-h-[100vh] p-10 rounded-xl">
+    <div className="mx-5 min-h-[100vh]">
       {signedInUser?.isPresident && (
         <>
-          <div className="mb-10">
+          <div className="my-10">
             <p className="text-2xl lg:text-3xl font-extrabold text-white">
               Add Notice
             </p>

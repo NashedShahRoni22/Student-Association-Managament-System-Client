@@ -11,7 +11,7 @@ export function DrawerBar({ open, closeDrawer}) {
  
   return (
     <React.Fragment>
-      <Drawer open={open} onClose={closeDrawer} className="bg-[#463BFB] border-r-4">
+      <Drawer open={open} onClose={closeDrawer} className="bg-[#463BFB]">
         <div className="mb-2 flex items-center justify-between p-4">
           <Typography variant="h6" color="white">
             SAMS

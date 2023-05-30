@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import Users from "../pages/Admin/Users";
 import ClubMembers from "../pages/ClubMembers/ClubMembers";
 import Meetings from "../pages/Meetings/Meetings";
+import TakeDecission from "../pages/TakeDecission/TakeDecission";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: "/upcoming-meeetings",
         element: <Meetings />,
+      },
+      {
+        path: "/take-decision",
+        element: <TakeDecission />,
       },
     ],
   },
