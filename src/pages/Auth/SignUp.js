@@ -71,7 +71,7 @@ export default function SignUp() {
 
   //save user to db
   const saveUser = (user) => {
-    fetch("http://localhost:5000/users", {
+    fetch("https://sams-server.vercel.app/users", {
       method: "POST",
       headers: {
         "content-type": "application/json",

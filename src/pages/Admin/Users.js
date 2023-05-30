@@ -13,7 +13,7 @@ const Users = () => {
   } = useQuery({
     queryKey: ["users"],
     queryFn: () =>
-      fetch("http://localhost:5000/user").then((res) => res.json()),
+      fetch("https://sams-server.vercel.app/user").then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
@@ -24,7 +24,7 @@ const Users = () => {
 
   //update user role
   const handleUpdateRole = (_id) => {
-    fetch(`http://localhost:5000/user/${_id}`, {
+    fetch(`https://sams-server.vercel.app/user/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -42,7 +42,7 @@ const Users = () => {
   const handleDelete = (name, _id) => {
     const agree = window.confirm(`Are you sure to delete ${name}`);
     if (agree) {
-      fetch(`http://localhost:5000/user/${_id}`, {
+      fetch(`https://sams-server.vercel.app/user/${_id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())

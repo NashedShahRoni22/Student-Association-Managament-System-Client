@@ -94,7 +94,7 @@ const AuthProvider = ({ children }) => {
   }, [auth]);
   //get signed in user and set to state
   useEffect(() => {
-    fetch(`http://localhost:5000/user?email=${user?.email}`)
+    fetch(`https://sams-server.vercel.app/user?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => setSignedInUser(data[0]));
   },[user?.email]);

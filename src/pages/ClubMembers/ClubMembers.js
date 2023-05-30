@@ -15,7 +15,7 @@ const ClubMembers = () => {
     queryKey: ["users"],
     queryFn: () =>
       fetch(
-        `http://localhost:5000/user?club_name=${signedInUser.club_name}`
+        `https://sams-server.vercel.app/user?club_name=${signedInUser.club_name}`
       ).then((res) => res.json()),
   });
 

@@ -14,11 +14,20 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+} from "@material-tailwind/react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
-import { Link } from "react-router-dom";
 
 const RecentActivity = () => {
+  const [open, setOpen] = useState(0);
+
+  const handleOpen = (value) => {
+    setOpen(open === value ? 0 : value);
+  };
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const date = new Date().toLocaleDateString("de-DE");
@@ -57,7 +66,7 @@ const RecentActivity = () => {
 
   //save activity post in DB
   const addactivity = (activity) => {
-    fetch("http://localhost:5000/activity", {
+    fetch("https://sams-server.vercel.app/activity", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -85,7 +94,7 @@ const RecentActivity = () => {
     queryKey: ["activityData"],
     queryFn: () =>
       fetch(
-        `http://localhost:5000/activity?club_name=${signedInUser.club_name}`
+        `https://sams-server.vercel.app/activity?club_name=${signedInUser.club_name}`
       ).then((res) => res.json()),
   });
 
@@ -99,7 +108,7 @@ const RecentActivity = () => {
   const handleDelete = (title, _id) => {
     const agree = window.confirm(`Are you sure to delete ${title}`);
     if (agree) {
-      fetch(`http://localhost:5000/activity/${_id}`, {
+      fetch(`https://sams-server.vercel.app/activity/${_id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
@@ -125,19 +134,20 @@ const RecentActivity = () => {
                   <CardBody className="flex flex-col gap-4">
                     <div className="flex flex-col items-center justify-center p-4 border-2 border-[#463BFB] border-dashed rounded-md">
                       <div>
-                        {selectedImage && (
+                        {selectedImage ? (
                           <img
                             src={URL.createObjectURL(selectedImage)}
-                            className="h-[200px] w-[200px] border mb-3"
+                            className="h-[150px] w-[150px] border mb-3"
                             alt="selected-img"
                           />
+                        ) : (
+                          <PhotoIcon className="h-[150px] w-[150px] text-[#463BFB]" />
                         )}
                       </div>
                       <label
                         htmlFor="activity-image"
-                        className="text-black font-semibold ml-1 flex gap-1 cursor-pointer px-4 py-2 shadow rounded hover:shadow-[#463BFB]"
+                        className="text-black font-semibold px-4 py-2 cursor-pointer shadow rounded hover:shadow-[#463BFB]"
                       >
-                        <PhotoIcon className="h-6 w-6 text-[#463BFB]" />
                         Choose Image
                       </label>
                       <input
@@ -249,8 +259,8 @@ const RecentActivity = () => {
           No Activites Found
         </p>
       ) : (
-        <div className="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
-          {activities?.map((activity) => (
+        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+          {activities?.map((activity,i) => (
             <Card className="w-96" key={activity._id}>
               <CardHeader color="blue-gray" className="relative h-56">
                 <img
@@ -268,19 +278,20 @@ const RecentActivity = () => {
                 <div className="flex justify-between items-end mt-3">
                   <div>
                     <Typography className=" font-semibold text-sm">
-                      {activity.date}
+                      Activity Date: {activity.date}
                     </Typography>
 
                     <Typography className="mt-2  font-semibold text-sm">
-                      {activity.time}
+                      Activity Time: {activity.time}
                     </Typography>
                   </div>
-                  <div>
-                    <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
-                      Details
-                    </Link>
-                  </div>
                 </div>
+                <Accordion open={open === i}>
+                  <AccordionHeader onClick={() => handleOpen(i)} className="text-sm border-0">
+                    Details
+                  </AccordionHeader>
+                  <AccordionBody>{activity.details}</AccordionBody>
+                </Accordion>
               </CardBody>
             </Card>
           ))}

@@ -15,10 +15,20 @@ import { toast } from "react-hot-toast";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+} from "@material-tailwind/react";
 
 export default function UpcomingNotices() {
+  const [open, setOpen] = useState(0);
+
+  const handleOpen = (value) => {
+    setOpen(open === value ? 0 : value);
+  };
+
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const date = new Date().toLocaleDateString("de-DE");
@@ -57,7 +67,7 @@ export default function UpcomingNotices() {
 
   //save notice post in DB
   const addNotice = (notice) => {
-    fetch("http://localhost:5000/notices", {
+    fetch("https://sams-server.vercel.app/notices", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -84,7 +94,7 @@ export default function UpcomingNotices() {
   } = useQuery({
     queryKey: ["noticeData"],
     queryFn: () =>
-      fetch(`http://localhost:5000/notices?club_name=${signedInUser.club_name}`).then((res) => res.json()),
+      fetch(`https://sams-server.vercel.app/notices?club_name=${signedInUser.club_name}`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
@@ -97,7 +107,7 @@ export default function UpcomingNotices() {
   const handleDelete = (title, _id) => {
     const agree = window.confirm(`Are you sure to delete ${title}`);
     if (agree) {
-      fetch(`http://localhost:5000/notices/${_id}`, {
+      fetch(`https://sams-server.vercel.app/notices/${_id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
@@ -124,19 +134,20 @@ export default function UpcomingNotices() {
                   <CardBody className="flex flex-col gap-4">
                     <div className="flex flex-col items-center justify-center p-4 border-2 border-[#463BFB] border-dashed rounded-md">
                       <div>
-                        {selectedImage && (
+                      {selectedImage ? (
                           <img
                             src={URL.createObjectURL(selectedImage)}
-                            className="h-[200px] w-[200px] border mb-3"
+                            className="h-[150px] w-[150px] border mb-3"
                             alt="selected-img"
                           />
+                        ) : (
+                          <PhotoIcon className="h-[150px] w-[150px] text-[#463BFB]" />
                         )}
                       </div>
                       <label
                         htmlFor="notice-image"
-                        className="text-black font-semibold ml-1 flex gap-1 cursor-pointer px-4 py-2 shadow rounded hover:shadow-[#463BFB]"
+                        className="text-black font-semibold cursor-pointer px-4 py-2 shadow rounded hover:shadow-[#463BFB]"
                       >
-                        <PhotoIcon className="h-6 w-6 text-[#463BFB]" />
                         Choose Image
                       </label>
                       <input
@@ -252,8 +263,8 @@ export default function UpcomingNotices() {
           No Notices Found
         </p>
       ) : (
-        <div className="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
-          {notices?.map((notice) => (
+        <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+          {notices?.map((notice,i) => (
             <Card className="w-96" key={notice._id}>
               <CardHeader color="blue-gray" className="relative h-56">
                 <img
@@ -270,19 +281,20 @@ export default function UpcomingNotices() {
                 <div className="flex justify-between items-end mt-3">
                   <div>
                     <Typography className=" font-semibold text-sm">
-                      {notice.date}
+                      Notice Date: {notice.date}
                     </Typography>
 
                     <Typography className="mt-3  font-semibold text-sm">
-                      {notice.time}
+                      Notice Time: {notice.time}
                     </Typography>
                   </div>
-                  <div>
-                    <Link className="text-[#463BFB] font-semibold px-4 py-2 border-2 border-[#463BFB] rounded-xl">
-                      Details
-                    </Link>
-                  </div>
                 </div>
+                <Accordion open={open === i}>
+                  <AccordionHeader onClick={() => handleOpen(i)} className="text-sm border-0">
+                    Details
+                  </AccordionHeader>
+                  <AccordionBody>{notice.details}</AccordionBody>
+                </Accordion>
               </CardBody>
             </Card>
           ))}

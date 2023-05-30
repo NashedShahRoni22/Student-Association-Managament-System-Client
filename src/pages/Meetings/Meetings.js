@@ -4,6 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/AuthProvider";
 import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
   Button,
   Card,
   CardBody,
@@ -13,19 +16,41 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
-import TimePicker from "react-time-picker";
+// import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+function Icon({ id, open }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${
+        id === open ? "rotate-180" : ""
+      } h-5 w-5 transition-transform`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
 
 const Meetings = () => {
   const [loading, setLoading] = useState(false);
   const date = new Date().toLocaleDateString("de-DE");
   const time = new Date().toLocaleTimeString();
-  const [value, onChange] = useState("10:00");
-  const [meetingDate, setMeetingDate] = useState(new Date());
+  const [open, setOpen] = useState(0);
+
+  const handleOpen = (value) => {
+    setOpen(open === value ? 0 : value);
+  };
+
   const { signedInUser } = useContext(AuthContext);
+
   //adding activity
   const handleAddactivity = (e) => {
     e.preventDefault();
@@ -34,15 +59,32 @@ const Meetings = () => {
     const title = form.title.value;
     const details = form.details.value;
     const metting_src = form.metting_src.value;
-    const metting_time = value;
-    const meeting_date = meetingDate.toLocaleDateString("de-DE");
+    const meeting_time = form.meeting_time.value;
+    const meeting_date = form.meeting_date.value;
     const postTime = time;
     const postDate = date;
+
+    // Convert the time to AM/PM format
+    const formattedTime = new Date(
+      `01/01/2000 ${meeting_time}`
+    ).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+
+    // Convert the date to DD:MM:YY format
+    const formattedDate = new Date(meeting_date).toLocaleDateString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    });
+
     const meetingData = {
       title,
       details,
-      metting_time,
-      meeting_date,
+      meeting_time: formattedTime,
+      meeting_date: formattedDate,
       metting_src,
       postTime,
       postDate,
@@ -53,7 +95,7 @@ const Meetings = () => {
 
   //   save activity post in DB
   const addMeeting = (meetingData) => {
-    fetch("http://localhost:5000/meetings", {
+    fetch("https://sams-server.vercel.app/meetings", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -80,7 +122,7 @@ const Meetings = () => {
     queryKey: ["activityData"],
     queryFn: () =>
       fetch(
-        `http://localhost:5000/meetings?club_name=${signedInUser?.club_name}`
+        `https://sams-server.vercel.app/meetings?club_name=${signedInUser?.club_name}`
       ).then((res) => res.json()),
   });
 
@@ -90,7 +132,7 @@ const Meetings = () => {
 
   const TABLE_HEAD = [
     "TITLE",
-    "DETAILS",
+    "MEETING SRC",
     "MEETING TIME",
     "MEETING DATE",
     "POST TIME",
@@ -98,22 +140,22 @@ const Meetings = () => {
     "ACTION",
   ];
 
-  //delete activity
-  //   const handleDelete = (title, _id) => {
-  //     const agree = window.confirm(`Are you sure to delete ${title}`);
-  //     if (agree) {
-  //       fetch(`http://localhost:5000/activity/${_id}`, {
-  //         method: "DELETE",
-  //       })
-  //         .then((res) => res.json())
-  //         .then((data) => {
-  //           if (data.deletedCount > 0) {
-  //             toast.error(`${title} deleted successfully!`);
-  //             refetch();
-  //           }
-  //         });
-  //     }
-  //   };
+  // delete meeting
+  const handleDelete = (title, _id) => {
+    const agree = window.confirm(`Are you sure to delete ${title}`);
+    if (agree) {
+      fetch(`https://sams-server.vercel.app/meetings/${_id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.deletedCount > 0) {
+            toast.error(`${title} deleted successfully!`);
+            refetch();
+          }
+        });
+    }
+  };
   return (
     <div className="mx-5 min-h-[100vh] p-10 rounded-xl">
       {signedInUser?.isPresident && (
@@ -126,7 +168,7 @@ const Meetings = () => {
               <Card className="shadow-xl mt-10 lg:w-1/3">
                 <form onSubmit={handleAddactivity}>
                   <CardBody className="flex flex-col gap-4">
-                    <div className="flex gap-4 items-center">
+                    {/* <div className="flex gap-4 items-center">
                       <div>
                         <TimePicker
                           amPmAriaLabel="Select AM/PM"
@@ -140,6 +182,28 @@ const Meetings = () => {
                           selected={meetingDate}
                           onChange={(date) => setMeetingDate(date)}
                           className="border border-[#463BFB] w-full text-lg h-[40px] text-center"
+                        />
+                      </div>
+                    </div> */}
+                    <div className="md:flex gap-4 justify-between">
+                      <div className="w-full">
+                        <p className="text-xs font-semibold">
+                          Enter meeting date
+                        </p>
+                        <Input
+                          type="date"
+                          name="meeting_date"
+                          variant="standard"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <p className="text-xs font-semibold mt-3 md:mt-0">
+                          Enter meeting time
+                        </p>
+                        <Input
+                          type="time"
+                          name="meeting_time"
+                          variant="standard"
                         />
                       </div>
                     </div>
@@ -196,7 +260,13 @@ const Meetings = () => {
                   </thead>
                   <tbody>
                     {meetings?.map(
-                      ({ _id, title, details, metting_time, meeting_date }) => (
+                      ({
+                        _id,
+                        title,
+                        meeting_time,
+                        meeting_date,
+                        metting_src,
+                      }) => (
                         <tr key={_id} className="even:bg-blue-gray-50/50">
                           <td className="p-4">{title}</td>
                           <td className="p-4">
@@ -205,7 +275,7 @@ const Meetings = () => {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {details}
+                              {metting_src}
                             </Typography>
                           </td>
                           <td className="p-4">
@@ -214,7 +284,7 @@ const Meetings = () => {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {metting_time}
+                              {meeting_time}
                             </Typography>
                           </td>
                           <td className="p-4">
@@ -248,7 +318,7 @@ const Meetings = () => {
                             <Button
                               size="sm"
                               color="red"
-                              // onClick={() => handleDelete(title, _id)}
+                              onClick={() => handleDelete(title, _id)}
                             >
                               Delete
                             </Button>
@@ -273,47 +343,47 @@ const Meetings = () => {
         </p>
       ) : (
         <div className="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
-          {meetings?.map((activity) => (
+          {meetings?.map((activity,i) => (
             <Card className="w-96" key={activity._id}>
               <CardBody>
-                <div className="flex justify-between">
-                  <div>
-                    <Typography variant="h5" className="text-[#463BFB]">
-                      {activity.title}
-                    </Typography>
-                    <Typography variant="md" className="text-[#463BFB]">
-                      {activity.details}
-                    </Typography>
-                  </div>
-                  <Typography variant="md" className="text-[#463BFB]">
-                    {activity.metting_src}
+                <div className="">
+                  <Typography variant="h5" className="text-[#463BFB]">
+                    {activity.title}
+                  </Typography>
+                  <Typography className="text-sm font-semibold text-[#463BFB]">
+                    Room or Link: {activity.metting_src}
                   </Typography>
                 </div>
 
-                <div className="flex justify-between">
-                  <div className="flex justify-between items-end mt-3">
-                    <div>
-                      <Typography className=" font-semibold text-sm">
-                        {activity.metting_time}
-                      </Typography>
+                <div className="flex justify-between mt-3">
+                  <div className="">
+                    <Typography className=" font-semibold text-sm">
+                      Meeting Date: {activity.meeting_date}
+                    </Typography>
 
-                      <Typography className="mt-2  font-semibold text-sm">
-                        {activity.meeting_date}
-                      </Typography>
-                    </div>
+                    <Typography className="mt-2  font-semibold text-sm">
+                      Meeting Time: {activity.meeting_time}
+                    </Typography>
                   </div>
-                  <div className="flex justify-between items-end mt-3">
-                    <div>
-                      <Typography className=" font-semibold text-sm">
-                        {activity.postDate}
-                      </Typography>
+                  <div className="">
+                    <Typography className=" font-semibold text-sm">
+                      Post Date: {activity.postDate}
+                    </Typography>
 
-                      <Typography className="mt-2  font-semibold text-sm">
-                        {activity.postTime}
-                      </Typography>
-                    </div>
+                    <Typography className="mt-2  font-semibold text-sm">
+                      Post Date: {activity.postTime}
+                    </Typography>
                   </div>
                 </div>
+                <Accordion open={open === i} icon={<Icon id={i} open={open} />}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(i)}
+                    className="text-sm border-0"
+                  >
+                    Details
+                  </AccordionHeader>
+                  <AccordionBody>{activity.details}</AccordionBody>
+                </Accordion>
               </CardBody>
             </Card>
           ))}
