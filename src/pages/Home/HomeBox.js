@@ -4,7 +4,6 @@ import {
   TrophyIcon,
   ChatBubbleLeftRightIcon,
   RssIcon,
-  GiftTopIcon,
   ChatBubbleBottomCenterIcon,
 } from "@heroicons/react/24/solid";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
@@ -14,7 +13,7 @@ export default function HomeBox() {
   return (
     <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-10">
       {/* Upcoming Notices */}
-      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
+      <Card className="border-l-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
         <CardBody className="flex flex-col items-center">
           <BellIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
           
@@ -38,7 +37,7 @@ export default function HomeBox() {
         </CardBody>
       </Card>
       {/* Ours Activity */}
-      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
+      <Card className="border-l-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
         <CardBody className="flex flex-col items-center">
           <TrophyIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
           <Typography
@@ -61,7 +60,7 @@ export default function HomeBox() {
         </CardBody>
       </Card>
       {/* Upcoming Meetings */}
-      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
+      <Card className="border-l-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
         <CardBody className="flex flex-col items-center">
           <ChatBubbleLeftRightIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
           <Typography
@@ -84,7 +83,7 @@ export default function HomeBox() {
         </CardBody>
       </Card>
       {/* Give Donation */}
-      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
+      {/* <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
         <CardBody className="flex flex-col items-center">
           <GiftTopIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
           <Typography
@@ -105,9 +104,9 @@ export default function HomeBox() {
             </Button>
           </a>
         </CardBody>
-      </Card>
+      </Card> */}
       {/* Our Blogs */}
-      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
+      <Card className="border-l-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
         <CardBody className="flex flex-col items-center">
           <RssIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
           <Typography
@@ -117,7 +116,7 @@ export default function HomeBox() {
           >
             Our <br /> Blogs
           </Typography>
-          <a href="/" className="inline-block">
+          <Link to="/blogs" className="inline-block">
             <Button
               size="sm"
               variant="text"
@@ -126,11 +125,11 @@ export default function HomeBox() {
               View Details
               <ArrowLongRightIcon strokeWidth={2} className="w-4 h-4" />
             </Button>
-          </a>
+          </Link>
         </CardBody>
       </Card>
       {/* Add Suggestion*/}
-      <Card className="border-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
+      <Card className="border-l-4 border-l-[#463BFB] group relative hover:translate-y-2 duration-300 ease-in-out">
         <CardBody className="flex flex-col items-center">
           <ChatBubbleBottomCenterIcon className="border-2 border-transparent p-2 rounded-full group-hover:border-[#463BFB] h-16 w-16 text-[#463BFB]" />
           <Typography

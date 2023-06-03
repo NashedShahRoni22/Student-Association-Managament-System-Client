@@ -1,12 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/AuthProvider";
 import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
   Button,
   Card,
   CardBody,
@@ -17,32 +14,11 @@ import {
 } from "@material-tailwind/react";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
 
-function Icon({ id, open }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${
-        id === open ? "rotate-180" : ""
-      } h-5 w-5 transition-transform`}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-    </svg>
-  );
-}
 
 const Meetings = () => {
   const [loading, setLoading] = useState(false);
   const date = new Date().toLocaleDateString("de-DE");
   const time = new Date().toLocaleTimeString();
-  const [open, setOpen] = useState(0);
-
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value);
-  };
 
   const { signedInUser } = useContext(AuthContext);
 
@@ -152,11 +128,11 @@ const Meetings = () => {
     }
   };
   return (
-    <div className="mx-5 min-h-[100vh]">
+    <div className="bg-gray-200 min-h-[100vh]">
       {signedInUser?.isPresident && (
         <>
-          <div className="my-10">
-            <p className="text-2xl lg:text-3xl font-extrabold text-white">
+          <div className="py-10 mx-5">
+            <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
               Schedule Meeting
             </p>
             <div className="lg:flex gap-16">
@@ -312,17 +288,17 @@ const Meetings = () => {
           <div></div>
         </>
       )}
-      <p className="text-2xl lg:text-3xl font-extrabold text-white">
+      <p className="ml-5 pt-5 text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
         All Meetings
       </p>
       {meetings?.length === 0 ? (
-        <p className="bg-white mt-5 text-3xl rounded-xl text-center py-20 font-bold text-red-500 shadow-xl">
-          No Activites Found
+        <p className="bg-white m-5 text-3xl rounded-xl text-center py-20 font-bold text-red-500 shadow-xl">
+          No Meetings Found
         </p>
       ) : (
         <div className="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
-          {meetings?.map((activity,i) => (
-            <Card className="w-96" key={activity._id}>
+          {meetings?.map((activity) => (
+            <Card className="w-96 relative" key={activity._id}>
               <CardBody>
                 <div className="">
                   <Typography variant="h5" className="text-[#463BFB]">
@@ -353,16 +329,8 @@ const Meetings = () => {
                     </Typography>
                   </div>
                 </div>
-                <Accordion open={open === i} icon={<Icon id={i} open={open} />}>
-                  <AccordionHeader
-                    onClick={() => handleOpen(i)}
-                    className="text-sm border-0"
-                  >
-                    Details
-                  </AccordionHeader>
-                  <AccordionBody>{activity.details}</AccordionBody>
-                </Accordion>
               </CardBody>
+              <div className="rounded-full absolute h-8 w-8 bg-[#463BFB] bottom-0 right-0"></div>
             </Card>
           ))}
         </div>

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React  from "react";
 import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
 import { toast } from "react-hot-toast";
 import { Button, Card, Typography } from "@material-tailwind/react";
@@ -8,19 +8,30 @@ const Users = () => {
   const {
     isLoading,
     error,
-    data: activities,
+    data: users,
     refetch,
   } = useQuery({
     queryKey: ["users"],
     queryFn: () =>
-      fetch("https://sams-server.vercel.app/user").then((res) => res.json()),
+      fetch("https://sams-server.vercel.app/user").then((res) => {
+        res.json();
+      }),
   });
 
   if (isLoading) return <LoadingSpinner />;
 
   if (error) return toast.error(error.message);
 
-  const TABLE_HEAD = ["NAME", "ID", "EMAIL", "SESSION","DEPARTMENT","CLUB NAME", "ROLE", "ACTION"];
+  const TABLE_HEAD = [
+    "NAME",
+    "ID",
+    "EMAIL",
+    "SESSION",
+    "DEPARTMENT",
+    "CLUB NAME",
+    "ROLE",
+    "ACTION",
+  ];
 
   //update user role
   const handleUpdateRole = (_id) => {
@@ -32,13 +43,12 @@ const Users = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.acknowledged){
-            refetch();
-        };
+        if (data.acknowledged) {
+          refetch();
+        }
       });
   };
   //delete user
-  //delete activity
   const handleDelete = (name, _id) => {
     const agree = window.confirm(`Are you sure to delete ${name}`);
     if (agree) {
@@ -76,88 +86,102 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {activities.filter(user => user.name !== "admin" ).map(
-              ({ _id, id, name, email, club_name, isPresident, start_session, end_session, department }) => (
-                <tr key={_id} className="even:bg-blue-gray-50/50">
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {name}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {id}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {email}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {start_session} to {end_session}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {department}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {club_name}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    {isPresident ? (
-                      <p className="px-4 py-2 shadow-xl w-fit rounded-xl bg-[#463BFB] text-white">President</p>
-                    ) : (
+            {users
+              .filter((user) => user.name !== "admin")
+              .map(
+                ({
+                  _id,
+                  id,
+                  name,
+                  email,
+                  club_name,
+                  isPresident,
+                  start_session,
+                  end_session,
+                  department,
+                }) => (
+                  <tr key={_id} className="even:bg-blue-gray-50/50">
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {name}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {id}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {email}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {start_session} to {end_session}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {department}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {club_name}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      {isPresident ? (
+                        <p className="px-4 py-2 shadow-xl w-fit rounded-xl bg-[#463BFB] text-white">
+                          President
+                        </p>
+                      ) : (
+                        <Button
+                          size="sm"
+                          color="green"
+                          onClick={() => handleUpdateRole(_id)}
+                        >
+                          Make President
+                        </Button>
+                      )}
+                    </td>
+                    <td className="p-4">
                       <Button
                         size="sm"
-                        color="green"
-                        onClick={() => handleUpdateRole(_id)}
+                        color="red"
+                        onClick={() => handleDelete(name, _id)}
                       >
-                        Make President
+                        Delete
                       </Button>
-                    )}
-                  </td>
-                  <td className="p-4">
-                    <Button
-                      size="sm"
-                      color="red"
-                      onClick={() => handleDelete(name, _id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              )
-            )}
+                    </td>
+                  </tr>
+                )
+              )}
           </tbody>
         </table>
       </Card>

@@ -18,7 +18,8 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   //signed in user info
   const [signedInUser, setSignedInUser] = useState(null);
-  //total
+  //total user
+  const [totalUser, setTotalUser] = useState("");
   //spinner for loading state
   const [loading, setLoading] = useState(true);
   //all clubs
@@ -78,13 +79,18 @@ const AuthProvider = ({ children }) => {
   //sign out user
   const logOut = () => {
     toast.error("Loged out");
-    setSignedInUser(null)
+    setSignedInUser(null);
     return signOut(auth);
   };
+  //get total user
+  useEffect(()=>{
+    fetch("https://sams-server.vercel.app/user")
+    .then(res => res.json())
+    .then(data => setTotalUser(data.length))
+  })
   //get current user and set to state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // console.log("Curent User Tracked", currentUser);
       setUser(currentUser);
       setLoading(false);
     });
@@ -96,8 +102,10 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     fetch(`https://sams-server.vercel.app/user?email=${user?.email}`)
       .then((res) => res.json())
-      .then((data) => setSignedInUser(data[0]));
-  },[user?.email]);
+      .then((data) => {
+        setSignedInUser(data[0]);
+      });
+  }, [user?.email]);
 
   //update user's profile
   const updateUser = (profile) => {
@@ -113,7 +121,8 @@ const AuthProvider = ({ children }) => {
     logOut,
     updateUser,
     clubs,
-    signedInUser
+    signedInUser,
+    totalUser, 
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

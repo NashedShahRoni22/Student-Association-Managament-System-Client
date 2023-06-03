@@ -15,7 +15,7 @@ const ClubMembers = () => {
     queryKey: ["users"],
     queryFn: () =>
       fetch(
-        `https://sams-server.vercel.app/user?club_name=${signedInUser.club_name}`
+        `https://sams-server.vercel.app/user?club_name=${signedInUser?.club_name}`
       ).then((res) => res.json()),
   });
 
@@ -25,9 +25,9 @@ const ClubMembers = () => {
 
   const TABLE_HEAD = ["NAME", "ID", "EMAIL", "CLUB NAME", "ROLE","SESSION", "DEPARTMENT"];
   return (
-    <div className="mx-5 min-h-[100vh]">
-      <Card className="shadow-xl mt-10 overflow-x-auto w-full">
-        <table className="w-full min-w-max text-left overflow-x-hidden">
+    <div className="min-h-[100vh] bg-gray-200 pt-10">
+      <Card className="mx-5 shadow-xl">
+        <table className="w-full text-left overflow-x-auto">
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
@@ -86,7 +86,7 @@ const ClubMembers = () => {
                     </Typography>
                   </td>
                   <td className="p-4">
-                    <p className="px-4 py-2 shadow-xl w-fit rounded-xl bg-[#463BFB] text-white">{isPresident ? "President" : "Member"}</p>
+                    <p className="px-2 py-1 shadow-xl w-fit rounded-xl bg-[#463BFB] text-white">{isPresident ? "President" : "Member"}</p>
                   </td>
                   <td className="p-4">
                     <Typography

@@ -10,6 +10,10 @@ import Users from "../pages/Admin/Users";
 import ClubMembers from "../pages/ClubMembers/ClubMembers";
 import Meetings from "../pages/Meetings/Meetings";
 import TakeDecission from "../pages/TakeDecission/TakeDecission";
+import ApplyFestive from "../pages/President/ApplyFestive";
+import FestiveRequest from "../pages/Admin/FestiveRequest";
+import Festives from "../pages/Festives/Festives";
+import Blogs from "../pages/Blogs/Blogs";
 
 export const router = createBrowserRouter([
   {
@@ -46,7 +50,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "/take-decision",
-        element: <TakeDecission />,
+        element: <TakeDecission/>,
+      },
+      {
+        path: "/apply-festive",
+        element: <ApplyFestive/>,
+      },
+      {
+        path: "/festive-request",
+        element: <FestiveRequest/>,
+      },
+      {
+        path: "/festive",
+        element: <Festives/>,
+      },
+      {
+        path: "/blogs",
+        element: <Blogs/>,
       },
     ],
   },

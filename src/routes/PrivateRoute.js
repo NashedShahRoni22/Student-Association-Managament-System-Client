@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }) => {
   if(loading){
     return <LoadingSpinner/>
   }
-  if (user && user?.uid) {
+  if (user && user?.uid ) {
     return children;
   }
   return <Navigate to="/sign-in" state={{ from: location }} replace/>;

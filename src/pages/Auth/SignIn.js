@@ -9,7 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { useContext } from "react";
 import { toast } from "react-hot-toast";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
 
@@ -17,8 +17,8 @@ export default function SignIn() {
   const { loginUser, loading, setLoading } = useContext(AuthContext);
   //private route setup
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname || "/";
   //handel user login
   const handelUserLogin = (e) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ export default function SignIn() {
       .then((res) => {
         toast.success("Login Successfull!");
         form.reset();
-        navigate(from, { replace: true });
+        navigate("/");
       })
       .catch((error) => {
         const errorMessage = error.message;

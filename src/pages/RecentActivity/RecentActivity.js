@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
@@ -10,24 +10,20 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
   Input,
   Textarea,
   Typography,
-} from "@material-tailwind/react";
-import {
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
 } from "@material-tailwind/react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import SmallSpinner from "../../components/Spinners/SmallSpinner";
 
 const RecentActivity = () => {
-  const [open, setOpen] = useState(0);
-
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value);
-  };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(!open);
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const date = new Date().toLocaleDateString("de-DE");
@@ -94,7 +90,7 @@ const RecentActivity = () => {
     queryKey: ["activityData"],
     queryFn: () =>
       fetch(
-        `https://sams-server.vercel.app/activity?club_name=${signedInUser.club_name}`
+        `https://sams-server.vercel.app/activity?club_name=${signedInUser?.club_name}`
       ).then((res) => res.json()),
   });
 
@@ -121,11 +117,11 @@ const RecentActivity = () => {
     }
   };
   return (
-    <div className="mx-5 min-h-[100vh]">
+    <div className="min-h-[100vh] bg-gray-200">
       {signedInUser?.isPresident && (
         <>
-          <div className="my-10">
-            <p className="text-2xl lg:text-3xl font-extrabold text-white">
+          <div className="py-10 mx-5">
+            <p className="text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
               Add Activity
             </p>
             <div className="lg:flex gap-16">
@@ -251,16 +247,16 @@ const RecentActivity = () => {
           <div></div>
         </>
       )}
-      <p className="text-2xl lg:text-3xl font-extrabold text-white">
+      <p className="ml-5 pt-5 text-2xl lg:text-3xl font-extrabold text-[#463BFB]">
         All Activities
       </p>
       {activities?.length === 0 ? (
-        <p className="bg-white mt-5 text-3xl rounded-xl text-center py-20 font-bold text-red-500 shadow-xl">
+        <p className="bg-white m-5 text-3xl rounded-xl text-center py-20 font-bold text-red-500 shadow-xl">
           No Activites Found
         </p>
       ) : (
         <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
-          {activities?.map((activity,i) => (
+          {activities?.map((activity, i) => (
             <Card className="w-96" key={activity._id}>
               <CardHeader color="blue-gray" className="relative h-56">
                 <img
@@ -274,24 +270,51 @@ const RecentActivity = () => {
                 <Typography variant="h5" className="text-[#463BFB]">
                   {activity.title}
                 </Typography>
+                <Typography className=" font-semibold text-sm">
+                  Activity Date: {activity.date}
+                </Typography>
 
-                <div className="flex justify-between items-end mt-3">
-                  <div>
-                    <Typography className=" font-semibold text-sm">
-                      Activity Date: {activity.date}
-                    </Typography>
-
-                    <Typography className="mt-2  font-semibold text-sm">
-                      Activity Time: {activity.time}
-                    </Typography>
-                  </div>
-                </div>
-                <Accordion open={open === i}>
-                  <AccordionHeader onClick={() => handleOpen(i)} className="text-sm border-0">
+                <Typography className="mt-2  font-semibold text-sm">
+                  Activity Time: {activity.time}
+                </Typography>
+                <Fragment>
+                  <Button
+                    onClick={handleOpen}
+                    size="sm"
+                    className="mt-3 bg-[#463BFB]"
+                  >
                     Details
-                  </AccordionHeader>
-                  <AccordionBody>{activity.details}</AccordionBody>
-                </Accordion>
+                  </Button>
+                  <Dialog open={open} handler={handleOpen}>
+                    <DialogHeader className="text-xl">Details</DialogHeader>
+                    <DialogBody divider className="text-sm font-semibold">
+                      <Typography variant="h5" className="text-[#463BFB]">
+                        Title: {activity.title}
+                      </Typography>
+                      <Typography className="text-[#463BFB] text-sm font-semibold">
+                        Details: <br /> {activity.details}
+                      </Typography>
+                      <Typography className="mt-3 font-semibold text-sm">
+                        Notice Date: {activity.date}
+                      </Typography>
+
+                      <Typography className="mt-3  font-semibold text-sm">
+                        Notice Time: {activity.time}
+                      </Typography>
+                    </DialogBody>
+                    <DialogFooter>
+                      <Button
+                        variant="text"
+                        color="red"
+                        onClick={handleOpen}
+                        className="mr-1"
+                        size="sm"
+                      >
+                        <span>Cancel</span>
+                      </Button>
+                    </DialogFooter>
+                  </Dialog>
+                </Fragment>
               </CardBody>
             </Card>
           ))}

@@ -3,11 +3,12 @@ import { Bars3CenterLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import RiseLoader from "react-spinners/RiseLoader";
+import { Typewriter } from "react-simple-typewriter";
 
 export default function Header({ openDrawer }) {
   const { user, logOut, signedInUser } = useContext(AuthContext);
   return (
-    <div className="px-5 py-2 bg-gray-200 text-[#463BFB]">
+    <div className="px-5 py-2 bg-white text-[#463BFB]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <RiseLoader
@@ -25,8 +26,17 @@ export default function Header({ openDrawer }) {
         </div>
 
         {signedInUser?.club_name && (
-          <h5 className="text-2xl font-semibold hidden md:block">
-            Welcome to {signedInUser.club_name} Club
+          <h5 className="text-2xl font-bold hidden md:block">
+            Welcome to{" "}
+            <Typewriter
+              words={[`${signedInUser.club_name} Club`,]}
+              loop={""}
+              cursor
+              cursorStyle="_"
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={1000}
+            />{" "}
           </h5>
         )}
         <div className="flex items-center">
