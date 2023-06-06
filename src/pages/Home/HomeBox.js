@@ -114,7 +114,7 @@ export default function HomeBox() {
             color="blue-gray"
             className="mb-2 text-center"
           >
-            Our <br /> Blogs
+            All <br /> Blogs
           </Typography>
           <Link to="/blogs" className="inline-block">
             <Button

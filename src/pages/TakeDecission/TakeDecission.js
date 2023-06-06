@@ -44,13 +44,13 @@ const TakeDecission = () => {
   };
   //get votes
   useEffect(() => {
-    fetch(`http://localhost:5000/vote?club_name=${signedInUser?.club_name}`)
+    fetch(`https://sams-server.vercel.app/vote?club_name=${signedInUser?.club_name}`)
       .then((res) => res.json())
       .then((data) => setVotes(data));
   });
   //post request
   const handleBecomePresident = (candidateInfo) => {
-    fetch("http://localhost:5000/decision", {
+    fetch("https://sams-server.vercel.app/decision", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -79,7 +79,7 @@ const TakeDecission = () => {
     queryKey: ["decisonData"],
     queryFn: () =>
       fetch(
-        `http://localhost:5000/decision?club_name=${signedInUser?.club_name}`
+        `https://sams-server.vercel.app/decision?club_name=${signedInUser?.club_name}`
       ).then((res) => res.json()),
   });
 
@@ -105,7 +105,7 @@ const TakeDecission = () => {
       decison,
       club_name,
     };
-    fetch("http://localhost:5000/vote", {
+    fetch("https://sams-server.vercel.app/vote", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -242,7 +242,7 @@ const TakeDecission = () => {
             </div>
           </form>
         </Card>
-        <div className="w-full mt-5 md:mt-0 grid md:grid-cols-2 lg:grid-cols-3">
+        <div className="w-full mt-5 md:mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {votes?.map((v) => (
             <div
               key={v._id}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { CalendarDaysIcon, UserGroupIcon, UserIcon } from "@heroicons/react/24/outline";
 import { AuthContext } from "../../context/AuthProvider";
-
 import ClockLoader from "react-spinners/ClockLoader";
 
 const Clock = () => {
@@ -22,7 +21,6 @@ const Clock = () => {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div className="border-l-4 border-l-[#463BFB] lg:flex gap-4 shadow-xl bg-white rounded-xl items-center justify-center p-8">
         <div>
-          {/* <ClockIcon className="h-12 text-[#463BFB]"/> */}
           <ClockLoader
           color="#463BFB"
             size={45}

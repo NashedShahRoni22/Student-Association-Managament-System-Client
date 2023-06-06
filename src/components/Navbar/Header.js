@@ -30,7 +30,6 @@ export default function Header({ openDrawer }) {
             Welcome to{" "}
             <Typewriter
               words={[`${signedInUser.club_name} Club`,]}
-              loop={""}
               cursor
               cursorStyle="_"
               typeSpeed={70}

@@ -23,50 +23,59 @@ const AuthProvider = ({ children }) => {
   //spinner for loading state
   const [loading, setLoading] = useState(true);
   //all clubs
-  const clubs = [
-    {
-      name: "Drama",
-    },
-    {
-      name: "Dance",
-    },
-    {
-      name: "Music",
-    },
-    {
-      name: "Racing",
-    },
-    {
-      name: "Basketball",
-    },
-    {
-      name: "Animation",
-    },
-    {
-      name: "Soccer",
-    },
-    {
-      name: "Badminton",
-    },
-    {
-      name: "Confucius",
-    },
-    {
-      name: "Debating",
-    },
-    {
-      name: "Table Tennis",
-    },
-    {
-      name: "Scatting",
-    },
-    {
-      name: "Modeling",
-    },
-    {
-      name: "Drawing",
-    },
-  ];
+  const [clubs, setClubs] = useState([]);
+
+  //get clubs
+  useEffect(()=>{
+    fetch("https://sams-server-nsrarvi.vercel.app/clubs")
+    .then(res => res.json())
+    .then(data => setClubs(data))
+  })
+  // const clubs = [
+  //   {
+  //     name: "Drama",
+  //   },
+  //   {
+  //     name: "Dance",
+  //   },
+  //   {
+  //     name: "Music",
+  //   },
+  //   {
+  //     name: "Racing",
+  //   },
+  //   {
+  //     name: "Basketball",
+  //   },
+  //   {
+  //     name: "Animation",
+  //   },
+  //   {
+  //     name: "Soccer",
+  //   },
+  //   {
+  //     name: "Badminton",
+  //   },
+  //   {
+  //     name: "Confucius",
+  //   },
+  //   {
+  //     name: "Debating",
+  //   },
+  //   {
+  //     name: "Table Tennis",
+  //   },
+  //   {
+  //     name: "Scatting",
+  //   },
+  //   {
+  //     name: "Modeling",
+  //   },
+  //   {
+  //     name: "Drawing",
+  //   },
+  // ];
+  //create user by firiebase
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
@@ -83,11 +92,11 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
   //get total user
-  useEffect(()=>{
+  useEffect(() => {
     fetch("https://sams-server.vercel.app/user")
-    .then(res => res.json())
-    .then(data => setTotalUser(data.length))
-  })
+      .then((res) => res.json())
+      .then((data) => setTotalUser(data.length));
+  });
   //get current user and set to state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -122,7 +131,7 @@ const AuthProvider = ({ children }) => {
     updateUser,
     clubs,
     signedInUser,
-    totalUser, 
+    totalUser,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

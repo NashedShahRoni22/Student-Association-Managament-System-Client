@@ -14,6 +14,7 @@ import ApplyFestive from "../pages/President/ApplyFestive";
 import FestiveRequest from "../pages/Admin/FestiveRequest";
 import Festives from "../pages/Festives/Festives";
 import Blogs from "../pages/Blogs/Blogs";
+import AddClub from "../pages/Admin/AddClub";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <Blogs/>,
+      },
+      {
+        path: "/add-club",
+        element: <AddClub/>,
       },
     ],
   },

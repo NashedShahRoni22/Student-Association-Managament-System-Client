@@ -14,7 +14,7 @@ export default function FestiveRequest() {
   } = useQuery({
     queryKey: ["users"],
     queryFn: () =>
-      fetch("http://localhost:5000/festive").then((res) => res.json()),
+      fetch("https://sams-server.vercel.app/festive").then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;
@@ -23,7 +23,7 @@ export default function FestiveRequest() {
 
   //approve festive
   const handleApprove = (_id) => {
-    fetch(`http://localhost:5000/festive/${_id}`, {
+    fetch(`https://sams-server.vercel.app/festive/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

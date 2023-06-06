@@ -1,22 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import React  from "react";
+import React from "react";
 import LoadingSpinner from "../../components/Spinners/LoadingSpinner";
 import { toast } from "react-hot-toast";
 import { Button, Card, Typography } from "@material-tailwind/react";
 
 const Users = () => {
-  const {
-    isLoading,
-    error,
-    data: users,
-    refetch,
-  } = useQuery({
-    queryKey: ["users"],
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ['repoData'],
     queryFn: () =>
-      fetch("https://sams-server.vercel.app/user").then((res) => {
-        res.json();
-      }),
-  });
+      fetch('https://sams-server.vercel.app/user').then(
+        (res) => res.json(),
+      ),
+  })
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -65,8 +60,8 @@ const Users = () => {
     }
   };
   return (
-    <div className="mx-5 min-h-[100vh]">
-      <Card className="shadow-xl mt-10 overflow-x-auto w-full">
+    <div className="min-h-[100vh] bg-gray-200 p-10">
+      <Card className="shadow-xl overflow-x-auto w-full">
         <table className="w-full min-w-max text-left overflow-x-hidden">
           <thead>
             <tr>
@@ -86,7 +81,7 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {users
+            {data
               .filter((user) => user.name !== "admin")
               .map(
                 ({

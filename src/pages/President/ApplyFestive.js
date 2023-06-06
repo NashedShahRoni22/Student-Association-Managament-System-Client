@@ -43,7 +43,7 @@ export default function ApplyFestive() {
       festive_date: formattedDate,
       club_name: signedInUser?.club_name,
     };
-    fetch("http://localhost:5000/festive", {
+    fetch("https://sams-server.vercel.app/festive", {
       method: "POST",
       headers: {
         "content-type": "application/json",

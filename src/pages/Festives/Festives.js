@@ -11,7 +11,7 @@ export default function Festives() {
   } = useQuery({
     queryKey: ["users"],
     queryFn: () =>
-      fetch("http://localhost:5000/festive").then((res) => res.json()),
+      fetch("https://sams-server.vercel.app/festive").then((res) => res.json()),
   });
 
   if (isLoading) return <LoadingSpinner />;

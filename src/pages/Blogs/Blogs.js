@@ -35,7 +35,7 @@ const Blogs = () => {
     queryKey: ["noticeData"],
     queryFn: () =>
       fetch(
-        `http://localhost:5000/blog`
+        `https://sams-server.vercel.app/blog`
       ).then((res) => res.json()),
   });
 
@@ -76,7 +76,7 @@ const Blogs = () => {
 
   //save notice post in DB
   const addBlog = (blog) => {
-    fetch("http://localhost:5000/blog", {
+    fetch("https://sams-server.vercel.app/blog", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -98,7 +98,7 @@ const Blogs = () => {
   return (
     <div className="bg-gray-200 min-h-screen relative">
       <button
-        className="bg-[#463BFB] rounded-full text-white absolute right-5 bottom-5"
+        className="bg-[#463BFB] rounded-full text-white absolute right-5 top-5"
         onClick={handleOpen}
       >
         <PlusIcon className="h-16" />

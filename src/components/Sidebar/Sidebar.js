@@ -20,11 +20,12 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 
 export default function Sidebar() {
+  //accordion
   const [open, setOpen] = useState(0);
-
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
+
   const { signedInUser } = useContext(AuthContext);
   return (
     <div className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4">
@@ -94,6 +95,9 @@ export default function Sidebar() {
                 </Link>
                 <Link className="ml-5" to="/festive-request">
                   <ListItem>Festive Request</ListItem>
+                </Link>
+                <Link className="ml-5" to="/add-club">
+                  <ListItem>Add Club</ListItem>
                 </Link>
               </List>
             </AccordionBody>
