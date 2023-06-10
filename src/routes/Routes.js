@@ -15,6 +15,7 @@ import FestiveRequest from "../pages/Admin/FestiveRequest";
 import Festives from "../pages/Festives/Festives";
 import Blogs from "../pages/Blogs/Blogs";
 import AddClub from "../pages/Admin/AddClub";
+import Payment from "../pages/Auth/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -82,5 +83,9 @@ export const router = createBrowserRouter([
   {
     path: "/sign-up",
     element: <SignUp />,
+  },
+  {
+    path: "/payment",
+    element: <Payment />,
   },
 ]);

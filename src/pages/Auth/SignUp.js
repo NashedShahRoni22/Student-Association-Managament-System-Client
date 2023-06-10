@@ -15,7 +15,7 @@ import SmallSpinner from "../../components/Spinners/SmallSpinner";
 
 export default function SignUp() {
   const { createUser, updateUser, loading, setLoading, clubs } =
-    useContext(AuthContext);
+  useContext(AuthContext);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   //handle user sign up
@@ -42,11 +42,10 @@ export default function SignUp() {
       setError("");
       createUser(email, password)
         .then(() => {
-          toast.success("Registration Successfull!");
           userProfileUpdate(name);
           saveUser(user);
           form.reset();
-          navigate("/");
+          navigate("/payment");
         })
         .catch((error) => {
           const errorMessage = error.message;
